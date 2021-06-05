@@ -1,5 +1,9 @@
-# make and install
+#!/bin/sh
 set -e
+
+# make and install
+sudo apt-get install ffmpeg
+
 echo "Building...."
 ./scripts/build_pip.sh
 echo "(Done)"
@@ -12,7 +16,7 @@ echo "(Done)"
 echo "1:10" | fmdpy "new songs" \
         && [ "$(find -name '*.mp3' | wc -l)" -eq 10 ]
 
-echo "1 2 3 4" | fmdpy "new songs" opus \
+echo "1, 2, 3, 4" | fmdpy "new songs" opus \
         && [ "$(find -name '*.opus' | wc -l)" -eq 4 ]
 
 
