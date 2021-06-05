@@ -5,8 +5,9 @@ from fmdpy.download import *
 @click.command()
 @click.option('-c', "--count", default=30, help="Max Number of results")
 @click.option('-f', "--fmt", default='opus', help="Format of the audio file.")
+@click.option('-b', "--bitrate", default=250, help="Bitrate in kb, (250k is default)")
 @click.argument('search', nargs=-1)
-def fmdpy(count, search, fmt):
+def fmdpy(count, search, fmt, bitrate):
     search=' '.join(search)
     song_list = query(search, count)
     for i, s in enumerate(song_list):
@@ -29,7 +30,7 @@ def fmdpy(count, search, fmt):
         s = song_list[i]
         print(f'{i+1}) {s.title} [{s.artist}] ({s.year})')
         getSongURLs(s)
-        Dl(s, fmt)
+        Dl(s, dlformat=fmt, bitrate=bitrate)
 
 if __name__ == '__main__':
     fmdpy()

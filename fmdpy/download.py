@@ -24,7 +24,7 @@ def dlf(url, file_name, dltext=""):
     print("\tdone.")
 
 
-def Dl(song_obj, dlformat='opus'):
+def Dl(song_obj, dlformat='opus', bitrate=250):
     tf_song = tempfile.NamedTemporaryFile(suffix='.mp4')
     dlf(song_obj.url, tf_song.name, "SONG:")
 
@@ -37,7 +37,7 @@ def Dl(song_obj, dlformat='opus'):
     (
             ffmpeg
             .input(tf_song.name)
-            .output(output_file, **{'b:a': '320k'})
+            .output(output_file, **{'b:a': f'{bitrate}k'})
             .global_args('-loglevel', 'error')
             .run()
     )
