@@ -32,7 +32,7 @@ def getLyric(song_obj):
         return song.lyrics
 
 
-def Dl(song_obj, dlformat='opus', bitrate=250):
+def Dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0):
     tf_song = tempfile.NamedTemporaryFile(suffix='.mp4')
     dlf(song_obj.url, tf_song.name, "SONG:")
 
@@ -59,9 +59,10 @@ def Dl(song_obj, dlformat='opus', bitrate=250):
     f.append_tag('comment', song_obj.copyright + ', downloaded using (https://github.com/Liupold/fmdpy)')
     f.append_tag('album', song_obj.album)
     f['artwork'] = tf_thumb.read()
-    song_lyric = getLyric(song_obj)
-    if song_lyric:
-        f['lyrics'] = song_lyric
+    if addlyrics:
+        song_lyric = getLyric(song_obj)
+        if song_lyric:
+            f['lyrics'] = song_lyric
     f.save()
     print("\n")
 

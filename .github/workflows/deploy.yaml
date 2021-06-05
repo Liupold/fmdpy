@@ -16,7 +16,7 @@ jobs:
       with:
         python-version: '3.9'
     - name: Build
-      run: sh scripts/build_pip.sh
+      run: ./scripts/build_pip.sh
 
     - name: Upload
       run: |
