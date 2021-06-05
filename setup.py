@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/Liupold/fmdpy",
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=['ffmpeg-python', 'click', 'music-tag', 'requests'],
+    install_requires=['ffmpeg-python', 'click', 'music-tag', 'requests', 'pillow'],
     entry_points = {
         'console_scripts': ['fmdpy=fmdpy.__main__:fmdpy'],
     },
