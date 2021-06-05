@@ -13,10 +13,10 @@ python -m  pip install ./dist/fmdpy-*.whl
 echo "(Done)"
 
 # test
-echo "1:10" | fmdpy "new songs" \
+echo "7:8" | fmdpy "new songs" \
         && [ "$(find -name '*.mp3' | wc -l)" -eq 10 ]
 
-echo "1, 2, 3, 4" | fmdpy "new songs" opus \
+echo "1, 4" | fmdpy "new songs" opus \
         && [ "$(find -name '*.opus' | wc -l)" -eq 4 ]
 
 
