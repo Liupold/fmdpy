@@ -13,6 +13,8 @@ def parse_query(query_json):
         song_copyright = s['more_info']['copyright_text']
         if len(s['more_info']['artistMap']['primary_artists']) != 0:
             song_artist = s['more_info']['artistMap']['primary_artists'][0]['name']
+        else:
+            song_artist = "Unknown"
         song_ = Song(songid=song_id, \
                 title=song_title, artist=song_artist, year=song_year, album=song_album, copyright=song_copyright)
         song_list.append(song_)
