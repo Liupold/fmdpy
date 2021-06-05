@@ -1,3 +1,8 @@
+Install:
+```
+python3 -m pip install fmdpy
+```
+
 ```
 Usage: fmdpy [OPTIONS] [SEARCH]...
 
