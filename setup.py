@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="fmdpy",
-    version="0.1.r2",
+    version="0.2",
     author="Rohn Chatterjee",
     author_email="rohn.ch@gmail.com",
     description="Music Downloader",
@@ -15,7 +15,7 @@ setuptools.setup(
     license='GPLv3',
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=['ffmpeg-python', 'click', 'music-tag', 'requests', 'pillow'],
+    install_requires=['ffmpeg-python', 'click', 'music-tag', 'requests', 'pillow', 'lyricsgenius'],
     entry_points = {
         'console_scripts': ['fmdpy=fmdpy.__main__:fmdpy'],
     },
