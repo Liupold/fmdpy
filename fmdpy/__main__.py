@@ -3,7 +3,7 @@ from fmdpy.api import query, getSongURLs
 from fmdpy.download import *
 
 @click.command()
-@click.option('-c', "--count", default=5, help="Max Number of results")
+@click.option('-c', "--count", default=30, help="Max Number of results")
 @click.option('-f', "--fmt", default='opus', help="Format of the audio file.")
 @click.argument('search', nargs=-1)
 def fmdpy(count, search, fmt):
