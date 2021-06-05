@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="fmdpy",
-    version="0.1",
+    version="0.1.r1",
     author="Rohn Chatterjee",
     author_email="rohn.ch@gmail.com",
     description="Music Downloader",
