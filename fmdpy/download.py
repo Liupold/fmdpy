@@ -3,7 +3,8 @@ import sys
 import tempfile
 import ffmpeg
 import music_tag
-from fmdpy import headers
+import lyricsgenius
+from fmdpy import *
 
 # download file
 def dlf(url, file_name, dltext=""):
@@ -25,9 +26,9 @@ def dlf(url, file_name, dltext=""):
     print("\tdone.")
 
 def getLyric(song_obj):
-    r = requests.get("https://makeitpersonal.co/lyrics", data={"artist": song_obj.artist, "title": song_obj.title})
-    if '\n' in r.text:
-        return r.text
+    genius = lyricsgenius.Genius(mnc(b'U1ZZR1lzTnlzQXNfVWwwVVVZcW1wMkhPT0EzdF9ZSjRILUJfTzA0cVRtekctVW94RUtlZEFVMGhlX3BwVmd5cg==').decode('utf-8'))
+    song = genius.search_song(song_obj.title, song_obj.artist)
+    return song.lyrics
 
 
 def Dl(song_obj, dlformat='opus', bitrate=250):
