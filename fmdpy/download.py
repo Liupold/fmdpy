@@ -3,11 +3,12 @@ import sys
 import tempfile
 import ffmpeg
 import music_tag
+from fmdpy import headers
 
 # download file
 def dlf(url, file_name, dltext=""):
     with open(file_name, "wb") as f:
-        response = requests.get(url, stream=True)
+        response = requests.get(url, headers=headers, stream=True)
         total_length = response.headers.get('content-length')
 
         if total_length is None: # no content length header
@@ -22,6 +23,11 @@ def dlf(url, file_name, dltext=""):
                         % (dltext, '=' * done, ' ' * (50-done), (dl/total_length)*100))
                 sys.stdout.flush()
     print("\tdone.")
+
+def getLyric(song_obj):
+    r = requests.get("https://makeitpersonal.co/lyrics", data={"artist": song_obj.artist, "title": song_obj.title})
+    if '\n' in r.text:
+        return r.text
 
 
 def Dl(song_obj, dlformat='opus', bitrate=250):
@@ -38,7 +44,7 @@ def Dl(song_obj, dlformat='opus', bitrate=250):
             ffmpeg
             .input(tf_song.name)
             .output(output_file, **{'b:a': f'{bitrate}k'})
-            .global_args('-loglevel', 'error')
+            .global_args('-loglevel', 'error', '-vn')
             .run()
     )
 
@@ -48,8 +54,12 @@ def Dl(song_obj, dlformat='opus', bitrate=250):
     f.append_tag('title', song_obj.title)
     f.append_tag('artist', song_obj.artist)
     f.append_tag('album', song_obj.album)
-    f.append_tag('comment', song_obj.copyright + ', downloaded using (FMD by liupold)')
+    f.append_tag('comment', song_obj.copyright + ', downloaded using (https://github.com/Liupold/fmdpy)')
+    f.append_tag('album', song_obj.album)
     f['artwork'] = tf_thumb.read()
+    song_lyric = getLyric(song_obj)
+    if song_lyric:
+        f['lyrics'] = song_lyric
     f.save()
     print("\n")
 
