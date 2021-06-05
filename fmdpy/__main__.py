@@ -16,8 +16,11 @@ def fmdpy(count, search, fmt):
     to_download = input("\nDownload: ")
 
     for indx in to_download.replace(' ', '').split(','):
-        if '-' in indx:
+        if ':' in indx:
             [l, u] = indx.split(':')
+            [ download_pool.append(i - 1) for i in range(int(l), int(u)+1) ]
+        elif '-' in indx:
+            [l, u] = indx.split('-')
             [ download_pool.append(i - 1) for i in range(int(l), int(u)+1) ]
         else:
             download_pool.append(int(indx) - 1)
