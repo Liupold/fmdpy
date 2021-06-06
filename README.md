@@ -1,33 +1,51 @@
-```
- ,gggggggggggggg ,ggg, ,ggg,_,ggg,   ,gggggggggggg,    ,ggggggggggg,   ,ggg,         gg
-dP""""""88""""""dP""Y8dP""Y88P""Y8b dP"""88""""""Y8b, dP"""88""""""Y8,dP""Y8a        88
-Yb,_    88      Yb, `88'  `88'  `88 Yb,  88       `8b,Yb,  88      `8bYb, `88        88
- `""    88       `"  88    88    88  `"  88        `8b `"  88      ,8P `"  88        88
-     ggg88gggg       88    88    88      88         Y8     88aaaad8P"      88        88
-        88   8       88    88    88      88         d8     88"""""         88        88
-        88           88    88    88      88        ,8P     88              88       ,88
-  gg,   88           88    88    88      88       ,8P'     88              Y8b,___,d888
-   "Yb,,8P           88    88    Y8,     88______,dP'      88               "Y88888P"88,
-     "Y8P'           88    88    `Y8    888888888P"        88                    ,ad8888
-                                                                                d8P" 88
-                                                                              ,d8'   88
-                                                                              d8'    88
-                                                                              88     88
-                                                                              Y8,_ _,88
-                                                                               "Y888P"
+# Probably the best music downloader?
+
+[![PIP-PYVERSION](https://img.shields.io/pypi/pyversions/fmdpy)](https://pypi.org/project/fmdpy/)
+[![CI-STATUS](https://github.com/Liupold/fmdpy/workflows/CI/badge.svg)](https://github.com/Liupold/fmdpy/actions?query=workflow%3A%22CI%22)
+[![CD-STATUS](https://github.com/Liupold/fmdpy/workflows/CD/badge.svg)](https://github.com/Liupold/fmdpy/actions?query=workflow%3A%22CD%22)
+[![license](https://img.shields.io/github/license/liupold/fmdpy.svg)](https://github.com/liupold/fmdpy/blob/master/LICENSE)
+[![PIP-VERSION](https://img.shields.io/pypi/v/fmdpy.svg)](https://pypi.org/project/fmdpy/)
+[![DL-MONTH](https://pypip.in/d/fmdpy/badge.svg)](https://pypi.org/project/fmdpy/)
+[![PIP-STATUS](https://img.shields.io/pypi/status/fmdpy)](https://pypi.org/project/fmdpy/)
+
 ```
 
-Install:
+ ,dPYb,                            8I
+ IP'`Yb                            8I
+ I8  8I                            8I
+ I8  8'                            8I
+ I8 dP   ,ggg,,ggg,,ggg,     ,gggg,8I  gg,gggg,    gg     gg
+ I8dP   ,8" "8P" "8P" "8,   dP"  "Y8I  I8P"  "Yb   I8     8I
+ I8P    I8   8I   8I   8I  i8'    ,8I  I8'    ,8i  I8,   ,8I
+,d8b,_ ,dP   8I   8I   Yb,,d8,   ,d8b,,I8 _  ,d8' ,d8b, ,d8I
+PI8"8888P'   8I   8I   `Y8P"Y8888P"`Y8PI8 YY88888PP""Y88P"888
+ I8 `8,                                I8               ,d8I'
+ I8  `8,                               I8             ,dP'8I
+ I8   8I                               I8            ,8"  8I
+ I8   8I                               I8            I8   8I
+ I8, ,8'                               I8            `8, ,8I
+  "Y8P'                                I8             `Y8P"
+```
+
+## INSTALL
 ```
 python3 -m pip install fmdpy
 ```
 
+## USEAGE
 ```
-Usage: fmdpy [OPTIONS] [SEARCH]...
+Usage: python -m fmdpy [OPTIONS] [SEARCH]...
 
 Options:
-  -c, --count INTEGER  Max Number of results
-  -f, --fmt TEXT       Format of the audio file.
-  --help               Show this message and exit.
+  -c, --count INTEGER    Max Number of results
+  -f, --fmt TEXT         Format of the audio file. (opus is default)
+  -b, --bitrate INTEGER  Bitrate in kb, (250k is default)
+  -d, --directory PATH   Specify the folder.
+  -l, --lyrics           Add lyrics
+  -V, --Version          display version
+  --help                 Show this message and exit.
+  ```
 
-```
+## EXAMPLE:
+![example.gif](example.gif)
+

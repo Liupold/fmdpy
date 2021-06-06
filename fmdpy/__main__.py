@@ -6,7 +6,7 @@ import sys
 
 @click.command()
 @click.option('-c', "--count", default=30, help="Max Number of results")
-@click.option('-f', "--fmt", default='opus', help="Format of the audio file.")
+@click.option('-f', "--fmt", default='opus', help="Format of the audio file. (opus is default)")
 @click.option('-b', "--bitrate", default=250, help="Bitrate in kb, (250k is default)")
 @click.option('-d', "--directory", default='./', help="Specify the folder.", type=click.Path(exists=True))
 @click.option('-l', "--lyrics", help="Add lyrics", is_flag=True)
