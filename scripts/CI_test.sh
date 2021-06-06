@@ -13,11 +13,11 @@ python -m  pip install ./dist/fmdpy-*.whl
 echo "(Done)"
 
 # test
-echo "7:8" | fmdpy "new songs" \
-        && [ "$(find -name '*.mp3' | wc -l)" -eq 2 ]
+echo "5:8, 12" | fmdpy -c 20 "new songs" -f mp3 \
+        && [ "$(find -name '*.mp3' | wc -l)" -eq 5 ]
 
-echo "1, 4" | fmdpy "new songs" opus \
-        && [ "$(find -name '*.opus' | wc -l)" -eq 2 ]
+echo "1, 4, 9:11" | fmdpy -c 20 new songs \
+        && [ "$(find -name '*.opus' | wc -l)" -eq 5 ]
 
 
 # cleaning
