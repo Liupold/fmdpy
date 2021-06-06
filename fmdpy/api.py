@@ -34,8 +34,9 @@ def getSongURLs(song_obj):
     r = requests.get(headers=headers, \
             url=f"https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids={song_obj.songid}")
     raw_json = r.json()[song_obj.songid]
-    song_obj.url = raw_json['media_preview_url'].\
-            replace('https://preview.saavncdn.com/', 'https://aac.saavncdn.com/').\
-            replace('_96_p.mp4', '_320.mp4')
-    song_obj.thumb_url = raw_json['image'].replace('-150x150.jpg', '-500x500.jpg')
+    if 'media_preview_url' in raw_json.keys():
+        song_obj.url = raw_json['media_preview_url'].\
+                replace('https://preview.saavncdn.com/', 'https://aac.saavncdn.com/').\
+                replace('_96_p.mp4', '_320.mp4')
+        song_obj.thumb_url = raw_json['image'].replace('-150x150.jpg', '-500x500.jpg')
 

@@ -15,7 +15,7 @@ setuptools.setup(
     license='GPLv3',
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=['ffmpeg-python', 'click', 'music-tag', 'requests', 'pillow', 'lyricsgenius', 'dataclasses'],
+    install_requires=['ffmpeg-python', 'click', 'music-tag>=0.4.3', 'requests', 'pillow', 'lyricsgenius', 'dataclasses'],
     entry_points = {
         'console_scripts': ['fmdpy=fmdpy.__main__:fmdpy'],
     },

@@ -32,15 +32,19 @@ def getLyric(song_obj):
         return song.lyrics
 
 
-def Dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0):
+def Dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0, directory="./"):
+    if song_obj.url == "":
+        return None
     tf_song = tempfile.NamedTemporaryFile(suffix='.mp4')
     dlf(song_obj.url, tf_song.name, "SONG:")
 
     tf_thumb = tempfile.NamedTemporaryFile(suffix='.jpg')
     dlf(song_obj.thumb_url, tf_thumb.name, "ART :")
-    output_file=f"{song_obj.artist}-{song_obj.title}({song_obj.year}).{dlformat}"\
+    output_file=directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year}).{dlformat}"\
             .replace(' ', '_').lower()
 
+    sys.stdout.write("Convering to %s..." % dlformat)
+    sys.stdout.flush()
     # convert to desired format.
     (
             ffmpeg
@@ -49,8 +53,12 @@ def Dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0):
             .global_args('-loglevel', 'error', '-vn')
             .run()
     )
+    sys.stdout.write("done\n")
+    sys.stdout.flush()
 
     # add music tags
+    sys.stdout.write("Adding Metadata...")
+    sys.stdout.flush()
     f = music_tag.load_file(output_file)
     f['year'] = song_obj.year
     f.append_tag('title', song_obj.title)
@@ -64,5 +72,7 @@ def Dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0):
         if song_lyric:
             f['lyrics'] = song_lyric
     f.save()
-    print("\n")
+    sys.stdout.write("done\n")
+    sys.stdout.flush()
+    return True
 
