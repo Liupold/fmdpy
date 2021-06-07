@@ -1,8 +1,9 @@
 """song class for fmdpy"""
 from dataclasses import dataclass
 
-@dataclass
+# needed to store metadata
 #pylint: disable=too-many-instance-attributes
+@dataclass
 class Song:
     """Song class to hold metadata"""
     songid: str

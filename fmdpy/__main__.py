@@ -5,6 +5,7 @@ from fmdpy.api import query, get_song_urls
 from fmdpy.download import main_dl
 from fmdpy import VERSION
 
+# This is needed for cli (too-many-arguments and too-many-locals)
 #pylint: disable=too-many-arguments disable=too-many-locals
 @click.command()
 @click.option('-c', "--count", default=30, help="Max Number of results")
