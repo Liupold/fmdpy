@@ -1,4 +1,5 @@
-"__main__ for module fmdpy (cli is handled here)"
+"""__main__ for module fmdpy (cli is handled here)."""
+
 import sys
 import click
 from fmdpy.api import query, get_song_urls
@@ -18,7 +19,8 @@ from fmdpy import VERSION
 @click.option('-V', "--Version", help="display version", is_flag=True)
 @click.argument('search', nargs=-1)
 def fmdpy(count, search, fmt, bitrate, version, lyrics, directory):
-    """Download music with metadata\n
+    """
+    Download music with metadata\n
     For multiple download you can use something like:\n
     "Download: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
 

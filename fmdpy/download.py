@@ -1,4 +1,4 @@
-"Downloader for fmdpy"
+"Downloader for fmdpy."
 import os
 import sys
 import tempfile
@@ -10,7 +10,7 @@ from fmdpy import mnc, headers
 
 # download file
 def dlf(url, file_name, dltext=""):
-    """download a file to a specified loaction"""
+    """download a file to a specified loaction."""
     with open(file_name, "wb") as file_obj:
         response = requests.get(url, headers=headers, stream=True)
         total_length = response.headers.get('content-length')
@@ -30,7 +30,7 @@ def dlf(url, file_name, dltext=""):
     print("\tdone.")
 
 def get_lyric(song_obj):
-    """get lyric"""
+    """get lyric."""
     genius = lyricsgenius.Genius(\
             mnc(b'U1ZZR1lzTnlzQXNfVWwwVVVZcW1wMkhPT0EzdF9ZSjRILUJfTzA0\
             cVRtekctVW94RUtlZEFVMGhlX3BwVmd5cg==').decode('utf-8'))
@@ -41,7 +41,7 @@ def get_lyric(song_obj):
 
 
 def main_dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0, directory="./"):
-    """Manin download function for fmdpy"""
+    """Main download function for fmdpy."""
     if song_obj.url == "":
         return None
 

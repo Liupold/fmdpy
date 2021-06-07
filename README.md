@@ -1,4 +1,4 @@
-# Probably the best music downloader?
+# FMDPY
 
 [![PIP-PYVERSION](https://img.shields.io/pypi/pyversions/fmdpy)](https://pypi.org/project/fmdpy/)
 [![CI-STATUS](https://github.com/Liupold/fmdpy/workflows/CI/badge.svg)](https://github.com/Liupold/fmdpy/actions?query=workflow%3A%22CI%22)
@@ -8,7 +8,7 @@
 [![DL-MONTH](https://pypip.in/d/fmdpy/badge.svg)](https://pypi.org/project/fmdpy/)
 [![PIP-STATUS](https://img.shields.io/pypi/status/fmdpy)](https://pypi.org/project/fmdpy/)
 
-```
+```text
 
  ,dPYb,                            8I
  IP'`Yb                            8I
@@ -28,12 +28,12 @@ PI8"8888P'   8I   8I   `Y8P"Y8888P"`Y8PI8 YY88888PP""Y88P"888
 ```
 
 ## INSTALL
-```
+```shell
 python3 -m pip install fmdpy
 ```
 
 ## USEAGE
-```
+```text
 Usage: fmdpy [OPTIONS] [SEARCH]...
 
   Download music with metadata
@@ -54,6 +54,6 @@ Options:
   --help                 Show this message and exit.
   ```
 
-## EXAMPLE:
-![example.gif](example.gif)
+## EXAMPLE
 
+![example.gif](example.gif)
