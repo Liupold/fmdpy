@@ -1,89 +1,98 @@
-import requests
+"Downloader for fmdpy"
+import os
 import sys
 import tempfile
+import requests
 import ffmpeg
 import music_tag
 import lyricsgenius
-import os
-from fmdpy import *
+from fmdpy import mnc, headers
 
 # download file
 def dlf(url, file_name, dltext=""):
-    with open(file_name, "wb") as f:
+    """download a file to a specified loaction"""
+    with open(file_name, "wb") as file_obj:
         response = requests.get(url, headers=headers, stream=True)
         total_length = response.headers.get('content-length')
 
         if total_length is None: # no content length header
-            f.write(response.content)
+            file_obj.write(response.content)
         else:
-            dl = 0
+            dl_length = 0
             total_length = int(total_length)
             for data in response.iter_content(chunk_size=4096):
-                dl += len(data); f.write(data)
-                done = int(50 * dl / total_length)
+                dl_length += len(data)
+                file_obj.write(data)
+                done = int(50 * dl_length / total_length)
                 sys.stdout.write("\r%s[%s%s](%.2f%%)" \
-                        % (dltext, '=' * done, ' ' * (50-done), (dl/total_length)*100))
+                        % (dltext, '=' * done, ' ' * (50-done), (dl_length/total_length)*100))
                 sys.stdout.flush()
     print("\tdone.")
 
-def getLyric(song_obj):
-    genius = lyricsgenius.Genius(mnc(b'U1ZZR1lzTnlzQXNfVWwwVVVZcW1wMkhPT0EzdF9ZSjRILUJfTzA0cVRtekctVW94RUtlZEFVMGhlX3BwVmd5cg==').decode('utf-8'))
+def get_lyric(song_obj):
+    """get lyric"""
+    genius = lyricsgenius.Genius(\
+            mnc(b'U1ZZR1lzTnlzQXNfVWwwVVVZcW1wMkhPT0EzdF9ZSjRILUJfTzA0\
+            cVRtekctVW94RUtlZEFVMGhlX3BwVmd5cg==').decode('utf-8'))
     song = genius.search_song(song_obj.title, song_obj.artist)
     if song:
         return song.lyrics
+    return None
 
 
-def Dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0, directory="./"):
+def main_dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0, directory="./"):
+    """Manin download function for fmdpy"""
     if song_obj.url == "":
         return None
-    tf_song = tempfile.NamedTemporaryFile(suffix='.mp4')
-    dlf(song_obj.url, tf_song.name, "SONG:")
 
-    tf_thumb = tempfile.NamedTemporaryFile(suffix='.jpg')
-    dlf(song_obj.thumb_url, tf_thumb.name, "ART :")
-    output_file=directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
-            .replace(' ', '_').lower()
+    with tempfile.NamedTemporaryFile(suffix='.mp4') as tf_song:
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as tf_thumb:
+            dlf(song_obj.url, tf_song.name, "SONG:")
+            dlf(song_obj.thumb_url, tf_thumb.name, "ART :")
 
-    if dlformat != 'native':
-        output_file+=f".{dlformat}"
-        sys.stdout.write("Convering to %s..." % dlformat)
-        sys.stdout.flush()
-        # convert to desired format.
-        (
-                ffmpeg
-                .input(tf_song.name)
-                .output(output_file, **{'b:a': f'{bitrate}k'})
-                .global_args('-loglevel', 'error', '-vn')
-                .run()
-        )
-        sys.stdout.write("done\n")
-        sys.stdout.flush()
-    else:
-        output_file+='.mp4'
-        if not os.path.isfile(output_file):
-            with open(output_file, 'wb') as f:
-                f.write(tf_song.read())
-        else:
-            print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
-            return False
+            output_file=directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
+                    .replace(' ', '_').lower()
 
-    # add music tags
-    sys.stdout.write("Adding Metadata...")
-    sys.stdout.flush()
-    f = music_tag.load_file(output_file)
-    f['year'] = song_obj.year
-    f.append_tag('title', song_obj.title)
-    f.append_tag('artist', song_obj.artist)
-    f.append_tag('album', song_obj.album)
-    f.append_tag('comment', song_obj.copyright + ', downloaded using (https://github.com/Liupold/fmdpy)')
-    f.append_tag('album', song_obj.album)
-    f['artwork'] = tf_thumb.read()
-    if addlyrics:
-        song_lyric = getLyric(song_obj)
-        if song_lyric:
-            f['lyrics'] = song_lyric
-    f.save()
-    sys.stdout.write("done\n")
-    sys.stdout.flush()
+            if dlformat != 'native':
+                output_file+=f".{dlformat}"
+                sys.stdout.write("Convering to %s..." % dlformat)
+                sys.stdout.flush()
+                # convert to desired format.
+                (
+                        ffmpeg
+                        .input(tf_song.name)
+                        .output(output_file, **{'b:a': f'{bitrate}k'})
+                        .global_args('-loglevel', 'error', '-vn')
+                        .run()
+                )
+                sys.stdout.write("done\n")
+                sys.stdout.flush()
+            else:
+                output_file+='.mp4'
+                if not os.path.isfile(output_file):
+                    with open(output_file, 'wb') as file_obj:
+                        file_obj.write(tf_song.read())
+                else:
+                    print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
+                    return False
+
+            # add music tags
+            sys.stdout.write("Adding Metadata...")
+            sys.stdout.flush()
+            file_obj = music_tag.load_file(output_file)
+            file_obj['year'] = song_obj.year
+            file_obj['title'] = song_obj.title
+            file_obj['artist'] =  song_obj.artist
+            file_obj['album']  = song_obj.album
+            file_obj['comment'] = song_obj.copyright \
+                    + ', downloaded using (https://github.com/Liupold/fmdpy)'
+            file_obj['album'] = song_obj.album
+            file_obj['artwork'] = tf_thumb.read()
+            if addlyrics:
+                song_lyric = get_lyric(song_obj)
+                if song_lyric:
+                    file_obj['lyrics'] = song_lyric
+            file_obj.save()
+            sys.stdout.write("done\n")
+            sys.stdout.flush()
     return True
-
