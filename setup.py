@@ -1,11 +1,13 @@
 import setuptools
+from fmdpy import VERSION
+
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="fmdpy",
-    version="0.2.2",
+    version=VERSION,
     author="Rohn Chatterjee",
     author_email="rohn.ch@gmail.com",
     description="Music Downloader",
