@@ -20,6 +20,7 @@ from fmdpy import VERSION
 @click.argument('search', nargs=-1)
 def fmdpy(count, search, fmt, bitrate, version, lyrics, directory):
     """FMDPY:
+
     Download music with metadata\n
     For multiple download you can use something like:\n
     "Download: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
