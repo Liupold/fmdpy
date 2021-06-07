@@ -4,7 +4,7 @@ from fmdpy import headers, ART
 from fmdpy.song import Song
 
 def parse_query(query_json):
-    """set metadata and return Song obj list."""
+    """Set metadata and return Song obj list."""
     song_list = []
     for sng_raw in query_json['results']:
         song_id = sng_raw['id']
@@ -23,7 +23,7 @@ def parse_query(query_json):
     return song_list
 
 def query(query_text, max_results=5):
-    """fetch songs from query."""
+    """Fetch songs from query."""
     if ("fmd" in query_text) or ("liupold" in query_text):
         print(ART)
 
@@ -34,7 +34,7 @@ def query(query_text, max_results=5):
     return parse_query(req.json())
 
 def get_song_urls(song_obj):
-    """fetch song download url."""
+    """Fetch song download url."""
     req = requests.get(headers=headers, \
         url=f"https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in\
         &_marker=0%3F_marker%3D0&_format=json&pids={song_obj.songid}")
