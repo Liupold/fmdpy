@@ -4,6 +4,7 @@ import tempfile
 import ffmpeg
 import music_tag
 import lyricsgenius
+import os
 from fmdpy import *
 
 # download file
@@ -40,21 +41,31 @@ def Dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0, directory="./"):
 
     tf_thumb = tempfile.NamedTemporaryFile(suffix='.jpg')
     dlf(song_obj.thumb_url, tf_thumb.name, "ART :")
-    output_file=directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year}).{dlformat}"\
+    output_file=directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
             .replace(' ', '_').lower()
 
-    sys.stdout.write("Convering to %s..." % dlformat)
-    sys.stdout.flush()
-    # convert to desired format.
-    (
-            ffmpeg
-            .input(tf_song.name)
-            .output(output_file, **{'b:a': f'{bitrate}k'})
-            .global_args('-loglevel', 'error', '-vn')
-            .run()
-    )
-    sys.stdout.write("done\n")
-    sys.stdout.flush()
+    if dlformat != 'native':
+        output_file+=f".{dlformat}"
+        sys.stdout.write("Convering to %s..." % dlformat)
+        sys.stdout.flush()
+        # convert to desired format.
+        (
+                ffmpeg
+                .input(tf_song.name)
+                .output(output_file, **{'b:a': f'{bitrate}k'})
+                .global_args('-loglevel', 'error', '-vn')
+                .run()
+        )
+        sys.stdout.write("done\n")
+        sys.stdout.flush()
+    else:
+        output_file+='.mp4'
+        if not os.path.isfile(output_file):
+            with open(output_file, 'wb') as f:
+                f.write(tf_song.read())
+        else:
+            print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
+            return False
 
     # add music tags
     sys.stdout.write("Adding Metadata...")
