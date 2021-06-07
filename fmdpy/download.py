@@ -9,13 +9,15 @@ import lyricsgenius
 from fmdpy import mnc, headers
 
 # download file
+
+
 def dlf(url, file_name, dltext=""):
     """Download a file to a specified loaction."""
     with open(file_name, "wb") as file_obj:
         response = requests.get(url, headers=headers, stream=True)
         total_length = response.headers.get('content-length')
 
-        if total_length is None: # no content length header
+        if total_length is None:  # no content length header
             file_obj.write(response.content)
         else:
             dl_length = 0
@@ -24,15 +26,17 @@ def dlf(url, file_name, dltext=""):
                 dl_length += len(data)
                 file_obj.write(data)
                 done = int(50 * dl_length / total_length)
-                sys.stdout.write("\r%s[%s%s](%.2f%%)" \
-                        % (dltext, '=' * done, ' ' * (50-done), (dl_length/total_length)*100))
+                sys.stdout.write("\r%s[%s%s](%.2f%%)" % (
+                    dltext, '=' * done, ' ' * (50 - done), \
+                            (dl_length / total_length) * 100))
                 sys.stdout.flush()
     print("\tdone.")
 
+
 def get_lyric(song_obj):
     """Get lyric."""
-    genius = lyricsgenius.Genius(\
-            mnc(b'U1ZZR1lzTnlzQXNfVWwwVVVZcW1wMkhPT0EzdF9ZSjRILUJfTzA0\
+    genius = lyricsgenius.Genius(
+        mnc(b'U1ZZR1lzTnlzQXNfVWwwVVVZcW1wMkhPT0EzdF9ZSjRILUJfTzA0\
             cVRtekctVW94RUtlZEFVMGhlX3BwVmd5cg==').decode('utf-8'))
     song = genius.search_song(song_obj.title, song_obj.artist)
     if song:
@@ -40,7 +44,12 @@ def get_lyric(song_obj):
     return None
 
 
-def main_dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0, directory="./"):
+def main_dl(
+        song_obj,
+        dlformat='opus',
+        bitrate=250,
+        addlyrics=0,
+        directory="./"):
     """Main download function for fmdpy."""
     if song_obj.url == "":
         return None
@@ -50,30 +59,31 @@ def main_dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0, directory="./")
             dlf(song_obj.url, tf_song.name, "SONG:")
             dlf(song_obj.thumb_url, tf_thumb.name, "ART :")
 
-            output_file=directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
-                    .replace(' ', '_').lower()
+            output_file = directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
+                .replace(' ', '_').lower()
 
             if dlformat != 'native':
-                output_file+=f".{dlformat}"
+                output_file += f".{dlformat}"
                 sys.stdout.write("Convering to %s..." % dlformat)
                 sys.stdout.flush()
                 # convert to desired format.
                 (
-                        ffmpeg
-                        .input(tf_song.name)
-                        .output(output_file, **{'b:a': f'{bitrate}k'})
-                        .global_args('-loglevel', 'error', '-vn')
-                        .run()
+                    ffmpeg
+                    .input(tf_song.name)
+                    .output(output_file, **{'b:a': f'{bitrate}k'})
+                    .global_args('-loglevel', 'error', '-vn')
+                    .run()
                 )
                 sys.stdout.write("done\n")
                 sys.stdout.flush()
             else:
-                output_file+='.mp4'
+                output_file += '.mp4'
                 if not os.path.isfile(output_file):
                     with open(output_file, 'wb') as file_obj:
                         file_obj.write(tf_song.read())
                 else:
-                    print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
+                    print(
+                        f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
                     return False
 
             # add music tags
@@ -82,10 +92,10 @@ def main_dl(song_obj, dlformat='opus', bitrate=250, addlyrics=0, directory="./")
             file_obj = music_tag.load_file(output_file)
             file_obj['year'] = song_obj.year
             file_obj['title'] = song_obj.title
-            file_obj['artist'] =  song_obj.artist
-            file_obj['album']  = song_obj.album
+            file_obj['artist'] = song_obj.artist
+            file_obj['album'] = song_obj.album
             file_obj['comment'] = song_obj.copyright \
-                    + ', downloaded using (https://github.com/Liupold/fmdpy)'
+                + ', downloaded using (https://github.com/Liupold/fmdpy)'
             file_obj['album'] = song_obj.album
             file_obj['artwork'] = tf_thumb.read()
             if addlyrics:

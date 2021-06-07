@@ -3,10 +3,11 @@ from dataclasses import dataclass
 
 # needed to store metadata
 #pylint: disable=too-many-instance-attributes
+
+
 @dataclass
 class Song:
-    """Song class to hold metadata.
-    """
+    """Song class to hold metadata."""
     songid: str
     title: str = "Unknown"
     album: str = "Unknown"
