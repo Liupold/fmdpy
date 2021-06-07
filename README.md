@@ -34,7 +34,15 @@ python3 -m pip install fmdpy
 
 ## USEAGE
 ```
-Usage: python -m fmdpy [OPTIONS] [SEARCH]...
+Usage: fmdpy [OPTIONS] [SEARCH]...
+
+  Download music with metadata
+
+  For multiple download you can use something like:
+
+  "Download: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
+
+  -f native: save to native container (ffmpeg not req., -b is ignored)
 
 Options:
   -c, --count INTEGER    Max Number of results
