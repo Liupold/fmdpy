@@ -11,13 +11,13 @@ from fmdpy import mnc, headers
 # download file
 
 
-def dlf(url, file_name, dltext=""):
+def dlf(url, file_name, silent=0, dltext=""):
     """Download a file to a specified loaction."""
     with open(file_name, "wb") as file_obj:
         response = requests.get(url, headers=headers, stream=True)
         total_length = response.headers.get('content-length')
 
-        if total_length is None:  # no content length header
+        if (total_length is None) or (silent):  # no content length header
             file_obj.write(response.content)
         else:
             dl_length = 0
@@ -27,7 +27,7 @@ def dlf(url, file_name, dltext=""):
                 file_obj.write(data)
                 done = int(50 * dl_length / total_length)
                 sys.stdout.write("\r%s[%s%s](%.2f%%)" % (
-                    dltext, '=' * done, ' ' * (50 - done), \
+                    dltext, '=' * done, ' ' * (50 - done),
                             (dl_length / total_length) * 100))
                 sys.stdout.flush()
     print("\tdone.")
@@ -49,23 +49,25 @@ def main_dl(
         dlformat='opus',
         bitrate=250,
         addlyrics=0,
-        directory="./"):
+        directory="./",
+        silent=0):
     """Main download function for fmdpy."""
     if song_obj.url == "":
         return None
 
     with tempfile.NamedTemporaryFile(suffix='.mp4') as tf_song:
         with tempfile.NamedTemporaryFile(suffix='.jpg') as tf_thumb:
-            dlf(song_obj.url, tf_song.name, "SONG:")
-            dlf(song_obj.thumb_url, tf_thumb.name, "ART :")
+            dlf(song_obj.url, tf_song.name, dltext="SONG:", silent=silent)
+            dlf(song_obj.thumb_url, tf_thumb.name, dltext="ART :", silent=silent)
 
             output_file = directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
                 .replace(' ', '_').lower()
 
             if dlformat != 'native':
                 output_file += f".{dlformat}"
-                sys.stdout.write("Convering to %s..." % dlformat)
-                sys.stdout.flush()
+                if not silent:
+                    sys.stdout.write("Convering to %s..." % dlformat)
+                    sys.stdout.flush()
                 # convert to desired format.
                 (
                     ffmpeg
@@ -74,8 +76,9 @@ def main_dl(
                     .global_args('-loglevel', 'error', '-vn')
                     .run()
                 )
-                sys.stdout.write("done\n")
-                sys.stdout.flush()
+                if not silent:
+                    sys.stdout.write("done\n")
+                    sys.stdout.flush()
             else:
                 output_file += '.mp4'
                 if not os.path.isfile(output_file):
@@ -87,8 +90,9 @@ def main_dl(
                     return False
 
             # add music tags
-            sys.stdout.write("Adding Metadata...")
-            sys.stdout.flush()
+            if not silent:
+                sys.stdout.write("Adding Metadata...")
+                sys.stdout.flush()
             file_obj = music_tag.load_file(output_file)
             file_obj['year'] = song_obj.year
             file_obj['title'] = song_obj.title
@@ -103,6 +107,7 @@ def main_dl(
                 if song_lyric:
                     file_obj['lyrics'] = song_lyric
             file_obj.save()
-            sys.stdout.write("done\n")
-            sys.stdout.flush()
+            if not silent:
+                sys.stdout.write("done\n")
+                sys.stdout.flush()
     return True
