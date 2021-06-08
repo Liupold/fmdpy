@@ -2,5 +2,5 @@
 
 rm -rf dist
 python -m build
-pip3 uninstall fmdpy
+echo "y" | pip3 uninstall fmdpy
 pip3 install --user ./dist/fmdpy-*.whl

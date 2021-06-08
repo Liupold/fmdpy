@@ -30,7 +30,9 @@ def dlf(url, file_name, silent=0, dltext=""):
                     dltext, '=' * done, ' ' * (50 - done),
                             (dl_length / total_length) * 100))
                 sys.stdout.flush()
-    print("\tdone.")
+
+    if not silent:
+        print("\tdone.")
 
 
 def get_lyric(song_obj):

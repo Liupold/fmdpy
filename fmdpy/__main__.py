@@ -4,6 +4,7 @@ import sys
 import click
 from fmdpy.api import query, get_song_urls
 from fmdpy.download import main_dl
+from fmdpy.splist import pl_spotify_dl
 from fmdpy import VERSION
 
 # This is needed for cli (too-many-arguments and too-many-locals)
@@ -33,7 +34,13 @@ def fmdpy(count, search, fmt, bitrate, version, lyrics, directory):
     if version:
         print("fmdpy:", VERSION)
         sys.exit(0)
+
     search = ' '.join(search)
+    if 'spotify.com/playlist' in search:
+        pl_spotify_dl(search, dlformat=fmt, bitrate=bitrate,\
+                addlyrics=lyrics)
+        sys.exit(0)
+
     song_list = query(search, count)
     for i, sng in enumerate(song_list):
         print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
