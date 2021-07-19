@@ -5,7 +5,7 @@
 [![CD-STATUS](https://github.com/Liupold/fmdpy/workflows/CD/badge.svg)](https://github.com/Liupold/fmdpy/actions?query=workflow%3A%22CD%22)
 [![license](https://img.shields.io/github/license/liupold/fmdpy.svg)](https://github.com/liupold/fmdpy/blob/master/LICENSE)
 [![PIP-VERSION](https://img.shields.io/pypi/v/fmdpy.svg)](https://pypi.org/project/fmdpy/)
-[![DL-MONTH](https://pypip.in/d/fmdpy/badge.svg)](https://pypi.org/project/fmdpy/)
+[![Downloads](https://pepy.tech/badge/fmdpy/month)](https://pepy.tech/project/fmdpy)
 [![PIP-STATUS](https://img.shields.io/pypi/status/fmdpy)](https://pypi.org/project/fmdpy/)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/95456cb6f9484d7fafb70ea3e43e9322)](https://www.codacy.com/gh/Liupold/fmdpy/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Liupold/fmdpy&amp;utm_campaign=Badge_Grade)
 
