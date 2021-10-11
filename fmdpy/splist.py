@@ -17,9 +17,12 @@ def get_song_from_sotify_item(item, **options):
     for q_song in q_results:
         if (title in q_song.title) and (q_song.artist == artist):
             get_song_urls(q_song)
-            main_dl(q_song, silent=1,  **options)
-            print(
-                f"Downloaded: {q_song.title} [{q_song.artist}] ({q_song.year})")
+            try:
+                main_dl(q_song, silent=1,  **options)
+                print(
+                    f"Downloaded: {q_song.title} [{q_song.artist}] ({q_song.year})")
+            except Exception as e:
+                print(e)
             return True
 
     print(f"NOT FOUND: {title} [{artist}]")

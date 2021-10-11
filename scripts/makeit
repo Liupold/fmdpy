@@ -1,6 +1,15 @@
-#!/bin/sh
+#!/usr/bin/env python3
 
-rm -rf dist
-python -m build
-echo "y" | pip3 uninstall fmdpy
-pip3 install --user ./dist/fmdpy-*.whl
+import shutil
+import sys
+import glob
+import subprocess
+import os
+
+if os.path.isdir('./dist'):
+    shutil.rmtree('./dist')
+subprocess.check_call([sys.executable, '-m', 'pip',
+                      'uninstall', '-y', 'fmdpy'])
+subprocess.check_call([sys.executable, './scripts/build.py'])
+subprocess.check_call([sys.executable, '-m', 'pip', 'install',
+                      glob.glob('./dist/fmdpy-*.whl')[0]])

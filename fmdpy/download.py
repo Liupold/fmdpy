@@ -57,13 +57,16 @@ def main_dl(
     if song_obj.url == "":
         return None
 
-    with tempfile.NamedTemporaryFile(suffix='.mp4') as tf_song:
-        with tempfile.NamedTemporaryFile(suffix='.jpg') as tf_thumb:
-            dlf(song_obj.url, tf_song.name, dltext="SONG:", silent=silent)
-            dlf(song_obj.thumb_url, tf_thumb.name, dltext="ART :", silent=silent)
+    with tempfile.NamedTemporaryFile(suffix='.mp4', delete=not (os.name == 'nt')) as tf_song:
+        with tempfile.NamedTemporaryFile(suffix='.jpg', delete=not (os.name == 'nt')) as tf_thumb:
 
             output_file = directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
                 .replace(' ', '_').lower()
+            if os.path.isfile(output_file):
+                print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
+                return False
+            dlf(song_obj.url, tf_song.name, dltext="SONG:", silent=silent)
+            dlf(song_obj.thumb_url, tf_thumb.name, dltext="ART :", silent=silent)
 
             if dlformat != 'native':
                 output_file += f".{dlformat}"
