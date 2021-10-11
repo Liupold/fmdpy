@@ -9,7 +9,6 @@ import lyricsgenius
 from fmdpy import mnc, headers
 
 # download file
-cwd = os.getcwd()
 
 
 def dlf(url, file_name, silent=0, dltext=""):
@@ -58,8 +57,8 @@ def main_dl(
     if song_obj.url == "":
         return None
 
-    with tempfile.NamedTemporaryFile(dir=cwd, suffix='.mp4') as tf_song:
-        with tempfile.NamedTemporaryFile(dir=cwd, suffix='.jpg') as tf_thumb:
+    with tempfile.NamedTemporaryFile(suffix='.mp4', delete=not (os.name == 'nt')) as tf_song:
+        with tempfile.NamedTemporaryFile(suffix='.jpg', delete=not (os.name == 'nt')) as tf_thumb:
 
             output_file = directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
                 .replace(' ', '_').lower()
