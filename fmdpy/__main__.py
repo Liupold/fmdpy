@@ -35,7 +35,7 @@ except ModuleNotFoundError:
 @click.option('-u', "--update", help="Update: (for pip only)", is_flag=True)
 @click.argument('search', nargs=-1)
 def fmdpy(count, search, fmt, bitrate, version, lyrics, update, directory):
-    r"""FMDPY.
+    """FMDPY.
 
     Download music with metadata\n
     For multiple download you can use something like:\n

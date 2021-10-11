@@ -29,13 +29,24 @@ PI8"8888P'   8I   8I   `Y8P"Y8888P"`Y8PI8 YY88888PP""Y88P"888
 ```
 
 ## INSTALL
+From PIP:
 ```shell
-python3 -m pip install fmdpy
+python -m pip install --upgrade fmdpy
+```
+From github: (after clone)
+```
+python ./install.py
+```
+## UPDATE:
+```
+fmdpy -u
 ```
 
 ## USEAGE
 ```text
 Usage: fmdpy [OPTIONS] [SEARCH]...
+
+  FMDPY.
 
   Download music with metadata
 
@@ -43,17 +54,19 @@ Usage: fmdpy [OPTIONS] [SEARCH]...
 
   "Download: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
 
-  -f native: save to native container (ffmpeg not req., -b is ignored)
+  -f native: save to native container [Default](ffmpeg not req.) (-b is
+  ignored)
 
 Options:
   -c, --count INTEGER    Max Number of results
-  -f, --fmt TEXT         Format of the audio file. (opus is default)
+  -f, --fmt TEXT         Format of the audio file.
   -b, --bitrate INTEGER  Bitrate in kb, (250k is default)
   -d, --directory PATH   Specify the folder.
   -l, --lyrics           Add lyrics
   -V, --Version          display version
+  -u, --update           Update: (for pip only)
   --help                 Show this message and exit.
-  ```
+```
 
 ## EXAMPLE
 
