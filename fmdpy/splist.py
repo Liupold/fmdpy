@@ -1,6 +1,6 @@
 """A."""
 import os
-from multiprocessing import Pool, cpu_count
+from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -41,5 +41,5 @@ def pl_spotify_dl(url, **options):
     if not os.path.exists(pl_name):
         os.makedirs(pl_name)
     dl_song = partial(get_song_from_sotify_item, directory=pl_name, **options)
-    with Pool(cpu_count()) as pool_:
-        _ = pool_.map(dl_song, playlist_dict['tracks']['items'])
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        _ = pool.map(dl_song, playlist_dict['tracks']['items'])
