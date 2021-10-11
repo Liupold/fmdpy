@@ -1,4 +1,4 @@
-"""fmdpy"""
+"""fmdpy."""
 import base64
 
 VERSION = "0.3"

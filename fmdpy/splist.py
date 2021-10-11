@@ -9,7 +9,7 @@ from fmdpy.download import main_dl
 
 
 def get_song_from_sotify_item(item, **options):
-    """search spotiy song and download from fmdpy."""
+    """Search spotiy song and download from fmdpy."""
     title = item['track']['name']
     artist = item['track']['album']['artists'][0]['name']
     q_results = query(f'{title} {artist}')
@@ -30,7 +30,7 @@ def get_song_from_sotify_item(item, **options):
 
 
 def pl_spotify_dl(url, **options):
-    """donwload given url."""
+    """Donwload given url."""
     spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
         client_id="694d8bf4f6ec420fa66ea7fb4c68f89d",
         client_secret="02ca2d4021a7452dae2328b47a6e8fe8")

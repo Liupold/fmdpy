@@ -34,10 +34,11 @@ From PIP:
 python -m pip install --upgrade fmdpy
 ```
 From github: (after clone)
-```
+
+```shell
 python ./install.py
 ```
-## UPDATE:
+## UPDATE
 ```
 fmdpy -u
 ```
