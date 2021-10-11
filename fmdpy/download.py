@@ -9,7 +9,7 @@ import lyricsgenius
 from fmdpy import mnc, headers
 
 # download file
-cwd = os.getcwd()
+cwd = os.getcwd() + '/'
 
 
 def dlf(url, file_name, silent=0, dltext=""):
