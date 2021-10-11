@@ -54,11 +54,15 @@ def main_dl(
         directory="./",
         silent=0):
     """Main download function for fmdpy."""
+    to_delete = []
     if song_obj.url == "":
         return None
 
     with tempfile.NamedTemporaryFile(suffix='.mp4', delete=not (os.name == 'nt')) as tf_song:
         with tempfile.NamedTemporaryFile(suffix='.jpg', delete=not (os.name == 'nt')) as tf_thumb:
+            if os.name == 'nt':
+                to_delete.append(tf_song.name)
+                to_delete.append(tf_thumb.name)
 
             output_file = directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
                 .replace(' ', '_').lower()
@@ -115,4 +119,6 @@ def main_dl(
             if not silent:
                 sys.stdout.write("done\n")
                 sys.stdout.flush()
+    if len(to_delete) > 0:
+        _ = [os.unlink(fname) for fname in to_delete]
     return True
