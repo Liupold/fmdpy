@@ -1,9 +1,13 @@
 """fmdpy"""
 import base64
 
-VERSION = "0.2.4"
+VERSION = "0.3"
+install_requires = ['ffmpeg-python', 'click', 'music-tag>=0.4.3', 'requests',
+                    'pillow', 'lyricsgenius', 'dataclasses', 'spotipy']
+
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/75.0',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1;' +
+    ' WOW64; rv:39.0) Gecko/20100101 Firefox/75.0',
 }
 
 ART = r'''  _| |_ |  \ /  |   /\  (   _   ) || || |
