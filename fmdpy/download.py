@@ -57,8 +57,8 @@ def main_dl(
     if song_obj.url == "":
         return None
 
-    with tempfile.NamedTemporaryFile(suffix='.mp4') as tf_song:
-        with tempfile.NamedTemporaryFile(suffix='.jpg') as tf_thumb:
+    with tempfile.NamedTemporaryFile(mode='w+b', suffix='.mp4') as tf_song:
+        with tempfile.NamedTemporaryFile(mode='w+b', suffix='.jpg') as tf_thumb:
 
             output_file = directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
                 .replace(' ', '_').lower()
