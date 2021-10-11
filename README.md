@@ -39,7 +39,8 @@ From github: (after clone)
 python ./install.py
 ```
 ## UPDATE
-```
+
+```shell
 fmdpy -u
 ```
 
