@@ -28,8 +28,8 @@ except ModuleNotFoundError:
               help="Max Number of results")
 @click.option('-f', "--fmt", default=config['DL_OPTIONS']['fmt'],
               help="Format of the audio file.")
-@click.option('-b', "--bitrate", default=config['DL_OPTIONS']['bitrate'],
-              help="Bitrate in kb, (250k is default)")
+@click.option('-b', "--bitrate", default=int(config['DL_OPTIONS']['bitrate']),
+              help="Bitrate in kb, (250 is default)")
 @click.option('-d', "--directory",
               default=config['DL_OPTIONS']['default_directory'],
               help="Specify the folder.", type=click.Path(exists=True))

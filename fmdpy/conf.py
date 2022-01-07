@@ -16,7 +16,7 @@ def load():
     config['DL_OPTIONS'] = {
             'fmt': "native",
             'lyrics': "False",
-            'bitrate': '250k',
+            'bitrate': '250',
             'default_directory': "./"
     }
 
