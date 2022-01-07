@@ -10,7 +10,7 @@ def load():
     config['DEFAULT'] = {}
 
     config['UI'] = {
-            'max_result_count': "6"
+            'max_result_count': "10"
     }
 
     config['DL_OPTIONS'] = {
