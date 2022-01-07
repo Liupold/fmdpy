@@ -1,5 +1,6 @@
 """fmdpy."""
 import base64
+from . import conf
 
 VERSION = "0.3"
 install_requires = ['ffmpeg-python', 'click', 'music-tag>=0.4.3', 'requests',
@@ -17,3 +18,4 @@ ART = r'''  _| |_ |  \ /  |   /\  (   _   ) || || |
    |_|  |_|   |_/________\_| |_|   |_|
                                          '''
 mnc = base64.decodebytes
+config = conf.load()

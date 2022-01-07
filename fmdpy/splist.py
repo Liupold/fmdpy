@@ -6,6 +6,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from fmdpy.api import query, get_song_urls
 from fmdpy.download import main_dl
+from fmdpy import config
 
 
 def get_song_from_sotify_item(item, **options):
@@ -32,8 +33,8 @@ def get_song_from_sotify_item(item, **options):
 def pl_spotify_dl(url, **options):
     """Donwload given url."""
     spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
-        client_id="694d8bf4f6ec420fa66ea7fb4c68f89d",
-        client_secret="02ca2d4021a7452dae2328b47a6e8fe8")
+        client_id=config['API_KEYS']['spotify_client_id'],
+        client_secret=config['API_KEYS']['spotify_client_secret'])
     )
 
     playlist_dict = spotify.playlist(url)
