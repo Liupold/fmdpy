@@ -76,9 +76,25 @@ The default location of config file is `~/.fmdpy.ini` and can be set
 using env var `FMDPY_CONFIG_FILE`
 
 The sample file is available in repo. `example.ini`
-This is by no means nessary for the operation.
+This is by no means necessary for the operation.
 
 To generate the config file use `fmdpy -g`
+
+## SPOTIFY support
+
+It can download playlist from spotify given the following is set in
+config file.
+```
+[API_KEYS]
+spotify_client_id =
+spotify_client_secret =
+```
+## Lyrics from lyrics genius
+It can also add lyrics from lyricsgenius into the meta data given the following is set in config file.
+```
+[API_KEYS]
+lyricsgenius =
+```
 
 ## EXAMPLE
 
