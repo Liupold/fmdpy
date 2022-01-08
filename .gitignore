@@ -4,3 +4,4 @@ dist/
 fmdpy.egg-info/
 fmdpy.spec
 fmdpy/__pycache__/
+tmp_test/

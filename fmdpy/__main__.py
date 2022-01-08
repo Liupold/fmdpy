@@ -1,8 +1,9 @@
 """__main__ for module fmdpy (cli is handled here)."""
-
+import os
 import sys
+import ast
 import subprocess
-from fmdpy import VERSION, install_requires
+from fmdpy import VERSION, install_requires, config
 
 if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
     subprocess.check_call([sys.executable, '-m', 'pip',
@@ -23,18 +24,24 @@ except ModuleNotFoundError:
 
 
 @click.command()
-@click.option('-c', "--count", default=10, help="Max Number of results")
-@click.option('-f', "--fmt", default='native',
+@click.option('-c', "--count", default=int(config['UI']['max_result_count']),
+              help="Max Number of results")
+@click.option('-f', "--fmt", default=config['DL_OPTIONS']['fmt'],
               help="Format of the audio file.")
-@click.option('-b', "--bitrate", default=250,
-              help="Bitrate in kb, (250k is default)")
-@click.option('-d', "--directory", default='./',
+@click.option('-b', "--bitrate", default=int(config['DL_OPTIONS']['bitrate']),
+              help="Bitrate in kb, (250 is default)")
+@click.option('-d', "--directory",
+              default=config['DL_OPTIONS']['default_directory'],
               help="Specify the folder.", type=click.Path(exists=True))
-@click.option('-l', "--lyrics", help="Add lyrics", is_flag=True)
+@click.option('-l', "--lyrics", help="Add lyrics",
+              default=ast.literal_eval(config['DL_OPTIONS']['lyrics']),
+              is_flag=True)
 @click.option('-V', "--Version", help="display version", is_flag=True)
+@click.option('-g', "--gen", help="generate the config file.", is_flag=True)
 @click.option('-u', "--update", help="Update: (for pip only)", is_flag=True)
 @click.argument('search', nargs=-1)
-def fmdpy(count, search, fmt, bitrate, version, lyrics, update, directory):
+def fmdpy(count, search, fmt, bitrate,
+          version, lyrics, update, directory, gen):
     """FMDPY.
 
     Download music with metadata\n
@@ -51,6 +58,13 @@ def fmdpy(count, search, fmt, bitrate, version, lyrics, update, directory):
 
     if version:
         print("fmdpy:", VERSION, f'({sys.executable})')
+        sys.exit(0)
+
+    if gen:
+        file_path = os.getenv('FMDPY_CONFIG_FILE') or \
+            os.path.expanduser('~/.fmdpy.ini')
+        with open(file_path, 'w') as configfile:
+            config.write(configfile)
         sys.exit(0)
 
     search = ' '.join(search)
