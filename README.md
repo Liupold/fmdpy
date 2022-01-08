@@ -84,14 +84,14 @@ To generate the config file use `fmdpy -g`
 
 It can download playlist from spotify given the following is set in
 config file.
-```
+```ini
 [API_KEYS]
 spotify_client_id =
 spotify_client_secret =
 ```
 ## Lyrics from lyrics genius
 It can also add lyrics from lyricsgenius into the meta data given the following is set in config file.
-```
+```ini
 [API_KEYS]
 lyricsgenius =
 ```
