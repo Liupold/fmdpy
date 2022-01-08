@@ -33,10 +33,10 @@ From PIP:
 ```shell
 python -m pip install --upgrade fmdpy
 ```
-From github: (after clone)
+From github:
 
 ```shell
-python ./install.py
+python -m pip install git+https://github.com/Liupold/fmdpy
 ```
 ## UPDATE
 
