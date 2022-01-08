@@ -10,19 +10,20 @@ def load():
     config['DEFAULT'] = {}
 
     config['UI'] = {
-            'max_result_count': "10"
+            'max_result_count': "10",
     }
 
     config['DL_OPTIONS'] = {
             'fmt': "native",
             'lyrics': "False",
             'bitrate': '250',
-            'default_directory': "./"
+            'default_directory': "./",
     }
 
     config['API_KEYS'] = {
             'spotify_client_id': "",
-            'spotify_client_secret': ""
+            'spotify_client_secret': "",
+            'lyricsgenius': "",
     }
 
     file_path = os.getenv('FMDPY_CONFIG_FILE') or \

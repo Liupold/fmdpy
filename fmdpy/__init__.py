@@ -1,5 +1,4 @@
 """fmdpy."""
-import base64
 from . import conf
 
 VERSION = "0.3"
@@ -17,5 +16,4 @@ ART = r'''  _| |_ |  \ /  |   /\  (   _   ) || || |
  \_   _/| |   | |/ /__\ \| | | |   | |
    |_|  |_|   |_/________\_| |_|   |_|
                                          '''
-mnc = base64.decodebytes
 config = conf.load()

@@ -6,7 +6,7 @@ import requests
 import ffmpeg
 import music_tag
 import lyricsgenius
-from fmdpy import mnc, headers
+from fmdpy import headers, config
 
 # download file
 
@@ -37,9 +37,7 @@ def dlf(url, file_name, silent=0, dltext=""):
 
 def get_lyric(song_obj):
     """Get lyric."""
-    genius = lyricsgenius.Genius(
-        mnc(b'U1ZZR1lzTnlzQXNfVWwwVVVZcW1wMkhPT0EzdF9ZSjRILUJfTzA0\
-            cVRtekctVW94RUtlZEFVMGhlX3BwVmd5cg==').decode('utf-8'))
+    genius = lyricsgenius.Genius(config['API_KEYS']['lyricsgenius'])
     song = genius.search_song(song_obj.title, song_obj.artist)
     if song:
         return song.lyrics
