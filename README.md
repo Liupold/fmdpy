@@ -62,13 +62,23 @@ Usage: fmdpy [OPTIONS] [SEARCH]...
 Options:
   -c, --count INTEGER    Max Number of results
   -f, --fmt TEXT         Format of the audio file.
-  -b, --bitrate INTEGER  Bitrate in kb, (250k is default)
+  -b, --bitrate INTEGER  Bitrate in kb, (250 is default)
   -d, --directory PATH   Specify the folder.
   -l, --lyrics           Add lyrics
   -V, --Version          display version
+  -g, --gen              generate the config file.
   -u, --update           Update: (for pip only)
   --help                 Show this message and exit.
+
 ```
+## CONFIG
+The default location of config file is `~/.fmdpy.ini` and can be set
+using env var `FMDPY_CONFIG_FILE`
+
+The sample file is available in repo. `example.ini`
+This is by no means nessary for the operation.
+
+To generate the config file use `fmdpy -g`
 
 ## EXAMPLE
 
