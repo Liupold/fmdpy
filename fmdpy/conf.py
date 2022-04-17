@@ -26,6 +26,11 @@ def load():
             'lyricsgenius': "",
     }
 
+    config['STREAM'] = {
+            'player_cmd': ["mpv",  "$audio", "--cover-art-file=$cover",
+                "--osd-msg2=$title", '--osd-level=2', '--really-quiet'],
+    }
+
     file_path = os.getenv('FMDPY_CONFIG_FILE') or \
         os.path.expanduser('~/.fmdpy.ini')
 

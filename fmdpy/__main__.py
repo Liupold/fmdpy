@@ -3,7 +3,7 @@ import os
 import sys
 import ast
 import subprocess
-from fmdpy import VERSION, install_requires, config
+from fmdpy import VERSION, install_requires, config, stream
 
 if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
     subprocess.check_call([sys.executable, '-m', 'pip',
@@ -46,7 +46,13 @@ def fmdpy(count, search, fmt, bitrate,
 
     Download music with metadata\n
     For multiple download you can use something like:\n
-    "Download: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
+
+    fmdpy: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
+
+    fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)
+
+    Streaming, downloading can also be mixed. If done so downloading
+    will be done prior to streaming.
 
     -f native: save to native container [Default](ffmpeg not req.)
     (-b is ignored)
@@ -79,16 +85,24 @@ def fmdpy(count, search, fmt, bitrate,
 
     if len(song_list) > 0:
         download_pool = []
-        to_download = input("\nDownload: ")
+        stream_pool = []
+
+        to_download = input("\nfmdpy: ")
         for indx in to_download.replace(' ', '').split(','):
+            if indx[0] == '>':
+                c_pool = stream_pool
+                indx = indx[1:]
+            else:
+                c_pool = download_pool
+
             if ':' in indx:
                 [lower, upper] = indx.split(':')
-                download_pool += [*range(int(lower) - 1, int(upper))]
+                c_pool += [*range(int(lower) - 1, int(upper))]
             elif '-' in indx:
                 [lower, upper] = indx.split('-')
-                download_pool += [*range(int(lower) - 1, int(upper))]
+                c_pool += [*range(int(lower) - 1, int(upper))]
             else:
-                download_pool.append(int(indx)-1)
+                c_pool.append(int(indx)-1)
 
         for i in download_pool:
             sng = song_list[i]
@@ -99,6 +113,11 @@ def fmdpy(count, search, fmt, bitrate,
                 print(f'Unable to download: {i+1})' +
                       f'{sng.title} [{sng.artist}] ({sng.year})')
             print("\n")
+
+        for i in stream_pool:
+            sng = song_list[i]
+            get_song_urls(sng)
+            stream.player(sng)
     else:
         print(f"No result for: {search}")
 

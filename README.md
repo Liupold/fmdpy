@@ -1,13 +1,16 @@
 # FMDPY
 
 [![PIP-PYVERSION](https://img.shields.io/pypi/pyversions/fmdpy)](https://pypi.org/project/fmdpy/)
-[![CI-STATUS](https://github.com/Liupold/fmdpy/workflows/CI/badge.svg)](https://github.com/Liupold/fmdpy/actions?query=workflow%3A%22CI%22)
-[![CD-STATUS](https://github.com/Liupold/fmdpy/workflows/CD/badge.svg)](https://github.com/Liupold/fmdpy/actions?query=workflow%3A%22CD%22)
 [![license](https://img.shields.io/github/license/liupold/fmdpy.svg)](https://github.com/liupold/fmdpy/blob/master/LICENSE)
 [![PIP-VERSION](https://img.shields.io/pypi/v/fmdpy.svg)](https://pypi.org/project/fmdpy/)
-[![Downloads](https://pepy.tech/badge/fmdpy/month)](https://pepy.tech/project/fmdpy)
 [![PIP-STATUS](https://img.shields.io/pypi/status/fmdpy)](https://pypi.org/project/fmdpy/)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/95456cb6f9484d7fafb70ea3e43e9322)](https://www.codacy.com/gh/Liupold/fmdpy/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Liupold/fmdpy&amp;utm_campaign=Badge_Grade)
+
+[![CI-STATUS](https://github.com/Liupold/fmdpy/workflows/CI/badge.svg)](https://github.com/Liupold/fmdpy/actions?query=workflow%3A%22CI%22)
+[![CD-STATUS](https://github.com/Liupold/fmdpy/workflows/CD/badge.svg)](https://github.com/Liupold/fmdpy/actions?query=workflow%3A%22CD%22)
+
+[![Downloads](https://pepy.tech/badge/fmdpy)](https://pepy.tech/project/fmdpy)
+
 
 ```text
 
@@ -95,6 +98,26 @@ It can also add lyrics from lyricsgenius into the meta data given the following 
 [API_KEYS]
 lyricsgenius =
 ```
+
+## Streaming
+For Streaming (version: 0.5+)
+The following must be set.
+
+```ini
+[STREAM]
+player_cmd =
+```
+(The default `player_cmd` used mpv)
+in `player_cmd` The following strings will be replaced:
+
+| Strings  | Replaced By                           |
+|----------|---------------------------------------|
+| `$audio` | The URL of the music file.            |
+| `$cover` | The URL of the cover art file. (JPEG) |
+| `$title` | SONG_NAME [ARTIST_NAME]               |
+
+#### vlc example
+`player_cmd = ['vlc', '$audio']`
 
 ## EXAMPLE
 
