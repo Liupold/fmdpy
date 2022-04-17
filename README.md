@@ -47,7 +47,7 @@ python -m pip install git+https://github.com/Liupold/fmdpy
 fmdpy -u
 ```
 
-## USEAGE
+## USAGE
 ```text
 Usage: fmdpy [OPTIONS] [SEARCH]...
 
