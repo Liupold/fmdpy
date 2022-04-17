@@ -11,7 +11,6 @@
 
 [![Downloads](https://pepy.tech/badge/fmdpy)](https://pepy.tech/project/fmdpy)
 
-
 ```text
 
  ,dPYb,                            8I
@@ -106,7 +105,7 @@ lyricsgenius =
 ```
 
 ## Streaming
-For Streaming (version: 0.5+) is required and 
+For Streaming (version: 0.5+) is required and
 the following must be set.
 
 ```ini
@@ -122,7 +121,7 @@ in `player_cmd` The following strings will be replaced:
 | `$cover` | The URL of the cover art file. (JPEG) |
 | `$title` | SONG_NAME [ARTIST_NAME]               |
 
-#### vlc example
+### vlc example
 `player_cmd = ['vlc', '$audio']`
 
 ## EXAMPLE
