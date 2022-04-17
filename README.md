@@ -57,7 +57,12 @@ Usage: fmdpy [OPTIONS] [SEARCH]...
 
   For multiple download you can use something like:
 
-  "Download: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
+  fmdpy: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
+
+  fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)
+
+  Streaming, downloading can also be mixed. If done so downloading will be
+  done prior to streaming.
 
   -f native: save to native container [Default](ffmpeg not req.) (-b is
   ignored)
@@ -74,6 +79,7 @@ Options:
   --help                 Show this message and exit.
 
 ```
+
 ## CONFIG
 The default location of config file is `~/.fmdpy.ini` and can be set
 using env var `FMDPY_CONFIG_FILE`
