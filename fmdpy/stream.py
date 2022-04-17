@@ -4,9 +4,9 @@ from fmdpy import config
 import ast
 
 def player(sng):
-    """Player based on player_cmd, which can play sng
+    """Player based on player_cmd
 
-    sng being the song object.
+    Input: sng (song object)
     retuns: CompletedProces
     """
     print('Playing:', sng.title + ' [' + sng.artist + '] ...')

@@ -119,7 +119,7 @@ in `player_cmd` The following strings will be replaced:
 |----------|---------------------------------------|
 | `$audio` | The URL of the music file.            |
 | `$cover` | The URL of the cover art file. (JPEG) |
-| `$title` | SONG_NAME [ARTIST_NAME]               |
+| `$title` | SONG_NAME \[ARTIST_NAME\]               |
 
 ### vlc example
 `player_cmd = ['vlc', '$audio']`
