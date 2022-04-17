@@ -18,6 +18,7 @@ def load():
             'lyrics': "False",
             'bitrate': '250',
             'default_directory': "./",
+            'multiple': '1',
     }
 
     config['API_KEYS'] = {

@@ -3,6 +3,7 @@ import os
 import sys
 import ast
 import subprocess
+from concurrent.futures import ThreadPoolExecutor
 from fmdpy import VERSION, install_requires, config, stream
 
 if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
@@ -30,6 +31,8 @@ except ModuleNotFoundError:
               help="Format of the audio file.")
 @click.option('-b', "--bitrate", default=int(config['DL_OPTIONS']['bitrate']),
               help="Bitrate in kb, (250 is default)")
+@click.option('-m', "--multiple", default=int(config['DL_OPTIONS']['multiple']),
+              help="number of concurrent downloads.")
 @click.option('-d', "--directory",
               default=config['DL_OPTIONS']['default_directory'],
               help="Specify the folder.", type=click.Path(exists=True))
@@ -40,7 +43,7 @@ except ModuleNotFoundError:
 @click.option('-g', "--gen", help="generate the config file.", is_flag=True)
 @click.option('-u', "--update", help="Update: (for pip only)", is_flag=True)
 @click.argument('search', nargs=-1)
-def fmdpy(count, search, fmt, bitrate,
+def fmdpy(count, search, fmt, bitrate, multiple,
           version, lyrics, update, directory, gen):
     """FMDPY.
 
@@ -104,15 +107,28 @@ def fmdpy(count, search, fmt, bitrate,
             else:
                 c_pool.append(int(indx)-1)
 
-        for i in download_pool:
+        def dl(i):
+            if multiple <= 1:
+                print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
+
             sng = song_list[i]
-            print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
             get_song_urls(sng)
-            if not main_dl(sng, dlformat=fmt, bitrate=bitrate,
-                           addlyrics=lyrics, directory=directory):
+            status = main_dl(sng, dlformat=fmt, bitrate=bitrate,
+                addlyrics=lyrics, directory=directory, silent=(multiple > 1))
+
+            if status and (multiple > 1):
+                print(f'Downloaded: {i+1}) {sng.title} [{sng.artist}] ({sng.year})')
+            if not status:
                 print(f'Unable to download: {i+1})' +
                       f'{sng.title} [{sng.artist}] ({sng.year})')
-            print("\n")
+            return status
+
+        if multiple > 1:
+            with ThreadPoolExecutor(max_workers=multiple) as exe:
+                exe.map(dl, download_pool)
+        else:
+            for i in download_pool:
+                dl(i)
 
         for i in stream_pool:
             sng = song_list[i]

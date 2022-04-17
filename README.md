@@ -67,16 +67,16 @@ Usage: fmdpy [OPTIONS] [SEARCH]...
   ignored)
 
 Options:
-  -c, --count INTEGER    Max Number of results
-  -f, --fmt TEXT         Format of the audio file.
-  -b, --bitrate INTEGER  Bitrate in kb, (250 is default)
-  -d, --directory PATH   Specify the folder.
-  -l, --lyrics           Add lyrics
-  -V, --Version          display version
-  -g, --gen              generate the config file.
-  -u, --update           Update: (for pip only)
-  --help                 Show this message and exit.
-
+  -c, --count INTEGER     Max Number of results
+  -f, --fmt TEXT          Format of the audio file.
+  -b, --bitrate INTEGER   Bitrate in kb, (250 is default)
+  -m, --multiple INTEGER  number of concurrent downloads.
+  -d, --directory PATH    Specify the folder.
+  -l, --lyrics            Add lyrics
+  -V, --Version           display version
+  -g, --gen               generate the config file.
+  -u, --update            Update: (for pip only)
+  --help                  Show this message and exit.
 ```
 
 ## CONFIG

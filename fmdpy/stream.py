@@ -4,7 +4,7 @@ from fmdpy import config
 import ast
 
 def player(sng):
-    """Player based on player_cmd
+    """Player based on player_cmd.
 
     Input: sng (song object)
     retuns: CompletedProces
