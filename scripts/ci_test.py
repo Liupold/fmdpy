@@ -30,6 +30,11 @@ with subprocess.Popen([*args, 'opus'],
     cp.communicate('4:7, 2\n'.encode())
 assert len(glob.glob('./tmp_test/*.opus')) == 5
 
+with subprocess.Popen([*args, 'native', '-m', '4'],
+                      stdin=subprocess.PIPE, stdout=subprocess.PIPE) as cp:
+    cp.communicate('1, 2:5\n'.encode())
+assert len(glob.glob('./tmp_test/*.mp4')) == 5
+
 # cleaning
 print("Cleaning...")
 shutil.rmtree('./dist')

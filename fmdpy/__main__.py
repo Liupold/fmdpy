@@ -108,16 +108,18 @@ def fmdpy(count, search, fmt, bitrate, multiple,
                 c_pool.append(int(indx)-1)
 
         def dl(i):
+            sng = song_list[i]
+            get_song_urls(sng)
+
             if multiple <= 1:
                 print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
 
-            sng = song_list[i]
-            get_song_urls(sng)
             status = main_dl(sng, dlformat=fmt, bitrate=bitrate,
                 addlyrics=lyrics, directory=directory, silent=(multiple > 1))
 
             if status and (multiple > 1):
                 print(f'Downloaded: {i+1}) {sng.title} [{sng.artist}] ({sng.year})')
+
             if not status:
                 print(f'Unable to download: {i+1})' +
                       f'{sng.title} [{sng.artist}] ({sng.year})')
