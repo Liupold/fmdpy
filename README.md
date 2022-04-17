@@ -100,14 +100,14 @@ lyricsgenius =
 ```
 
 ## Streaming
-For Streaming (version: 0.5+)
-The following must be set.
+For Streaming (version: 0.5+) is required and 
+the following must be set.
 
 ```ini
 [STREAM]
 player_cmd =
 ```
-(The default `player_cmd` used mpv)
+(The default `player_cmd` uses mpv)
 in `player_cmd` The following strings will be replaced:
 
 | Strings  | Replaced By                           |
