@@ -28,8 +28,11 @@ def load():
     }
 
     config['STREAM'] = {
-            'player_cmd': ["mpv",  "$audio", "--cover-art-file=$cover",
-                "--osd-msg2=$title", '--osd-level=2', '--really-quiet'],
+            'player_cmd': ['setsid', '-f', 'mpv', '$audio',
+                '--cover-art-file=$cover',
+                '--force-media-title=$title',
+                '--really-quiet',
+                '--oset-metadata-set=comment="a"', '--no-terminal'],
     }
 
     file_path = os.getenv('FMDPY_CONFIG_FILE') or \
