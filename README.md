@@ -56,9 +56,13 @@ Usage: fmdpy [OPTIONS] [SEARCH]...
 
   For multiple download you can use something like:
 
-  fmdpy: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
+  "fmdpy: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
 
-  fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)
+  "fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)
+
+  "fmdpy: }5", (This will find lyric of 5)
+
+  "fmdpy: ?<KEYWORD>", (This will search songs based on <KEYWORD>).
 
   Streaming, downloading can also be mixed. If done so downloading will be
   done prior to streaming.
