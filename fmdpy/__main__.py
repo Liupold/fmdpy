@@ -93,6 +93,9 @@ def fmdpy(count, search, fmt, bitrate, multiple,
 
             prompt_input = input("\nfmdpy: ")
 
+            if prompt_input[0] == 'quit' or prompt_input[0] == 'exit':
+                break
+            
             if prompt_input[0] == '?':
                 search = prompt_input[1:]
                 song_list = query(search, count)
