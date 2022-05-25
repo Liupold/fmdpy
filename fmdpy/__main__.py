@@ -95,7 +95,7 @@ def fmdpy(count, search, fmt, bitrate, multiple,
 
             prompt_input = input("\nfmdpy: ")
 
-            if prompt_input in ['quit', 'exit']:
+            if prompt_input in ('quit', 'exit'):
                 break
 
             if prompt_input[0] == '?':
