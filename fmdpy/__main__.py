@@ -21,6 +21,7 @@ except ModuleNotFoundError:
     print("Report to: https://github.com/liupold/fmdpy/issues")
     sys.exit(2)
 
+
 # This is needed for cli (too-many-arguments and too-many-locals)
 # pylint: disable=too-many-arguments disable=too-many-locals
 @click.command()
@@ -30,7 +31,8 @@ except ModuleNotFoundError:
               help="Format of the audio file.")
 @click.option('-b', "--bitrate", default=int(config['DL_OPTIONS']['bitrate']),
               help="Bitrate in kb, (250 is default)")
-@click.option('-m', "--multiple", default=int(config['DL_OPTIONS']['multiple']),
+@click.option('-m', "--multiple",
+              default=int(config['DL_OPTIONS']['multiple']),
               help="number of concurrent downloads.")
 @click.option('-d', "--directory",
               default=config['DL_OPTIONS']['default_directory'],
@@ -93,6 +95,9 @@ def fmdpy(count, search, fmt, bitrate, multiple,
 
             prompt_input = input("\nfmdpy: ")
 
+            if prompt_input in ('quit', 'exit'):
+                break
+
             if prompt_input[0] == '?':
                 search = prompt_input[1:]
                 song_list = query(search, count)
@@ -128,10 +133,12 @@ def fmdpy(count, search, fmt, bitrate, multiple,
                     print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
 
                 status = main_dl(sng, dlformat=fmt, bitrate=bitrate,
-                    addlyrics=lyrics, directory=directory, silent=(multiple > 1))
+                                 addlyrics=lyrics, directory=directory,
+                                 silent=(multiple > 1))
 
                 if status and (multiple > 1):
-                    print(f'Downloaded: {i+1}) {sng.title} [{sng.artist}] ({sng.year})')
+                    print(f'Downloaded: \
+                          {i+1}) {sng.title} [{sng.artist}] ({sng.year})')
 
                 if not status:
                     print(f'Unable to download: {i+1})' +
