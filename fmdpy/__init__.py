@@ -1,7 +1,7 @@
 """fmdpy."""
 from . import conf
 
-VERSION = "0.5.1"
+VERSION = "0.5.2"
 install_requires = ['ffmpeg-python', 'click', 'music-tag>=0.4.3', 'requests',
                     'pillow', 'lyricsgenius', 'dataclasses', 'spotipy']
 
