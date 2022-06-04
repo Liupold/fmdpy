@@ -62,7 +62,7 @@ def main_dl(
                 to_delete.append(tf_song.name)
                 to_delete.append(tf_thumb.name)
 
-            output_file = directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
+            output_file = directory + f"/{song_obj.artist}/{song_obj.artist}-{song_obj.title}({song_obj.year})"
                 .replace(' ', '_').lower()
             if os.path.isfile(output_file):
                 print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
