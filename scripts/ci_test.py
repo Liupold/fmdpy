@@ -23,7 +23,7 @@ args = [sys.executable, '-m', 'fmdpy', '-c', '10',
 with subprocess.Popen([*args, 'mp3'],
                       stdin=subprocess.PIPE, stdout=subprocess.PIPE) as cp:
     cp.communicate('3-6,1\n'.encode())
-assert len(glob.glob('./tmp_test/tmp_test2/*.mp3')) == 5
+assert len(glob.glob('./tmp_test/*.mp3')) == 5
 
 with subprocess.Popen([*args, 'opus'],
                       stdin=subprocess.PIPE, stdout=subprocess.PIPE) as cp:
