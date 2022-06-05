@@ -3,7 +3,7 @@ from . import conf
 
 VERSION = "0.5.2"
 install_requires = ['ffmpeg-python', 'click', 'music-tag>=0.4.3', 'requests',
-                    'pillow', 'lyricsgenius', 'dataclasses', 'spotipy']
+                    'pillow', 'lyricsgenius', 'dataclasses', 'spotipy', 'tqdm']
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1;' +
