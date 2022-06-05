@@ -3,7 +3,9 @@ import os
 import sys
 import ast
 import subprocess
+from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
+from threading import RLock as TRLock
 from fmdpy import VERSION, install_requires, config, stream
 
 if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
@@ -153,29 +155,14 @@ def fmdpy(count, search, fmt, bitrate, multiple,
             def download(i):
                 sng = song_list[i]
                 get_song_urls(sng)
-
-                if multiple <= 1:
-                    print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
-
                 status = main_dl(sng, dlformat=fmt, bitrate=bitrate,
                                  addlyrics=lyrics, directory=directory,
-                                 silent=(multiple > 1))
-
-                if status and (multiple > 1):
-                    print(f'Downloaded: \
-                          {i+1}) {sng.title} [{sng.artist}] ({sng.year})')
-
-                if not status:
-                    print(f'Unable to download: {i+1})' +
-                          f'{sng.title} [{sng.artist}] ({sng.year})')
+                                 silent=False)
                 return status
 
-            if multiple > 1:
-                with ThreadPoolExecutor(max_workers=multiple) as exe:
-                    exe.map(download, download_pool)
-            else:
-                for i in download_pool:
-                    download(i)
+            with ThreadPoolExecutor(max_workers=multiple, \
+                    initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)) as exe:
+                exe.map(download, download_pool)
 
             for i in stream_pool:
                 sng = song_list[i]
@@ -183,8 +170,10 @@ def fmdpy(count, search, fmt, bitrate, multiple,
                 stream.player(sng)
         else:
             print(f"No result for: {search}")
+            break
 
 
 if __name__ == '__main__':
     # pylint: disable=no-value-for-parameter
+    tqdm.set_lock(TRLock())
     fmdpy()
