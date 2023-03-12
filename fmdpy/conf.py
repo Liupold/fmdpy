@@ -17,9 +17,9 @@ def load():
             'fmt': "native",
             'lyrics': "False",
             'bitrate': '250',
-            'default_directory': "./",
+            'default_directory': "$artist/$album/",
             'filename': "$artist-$name-$year",
-            'multiple': '1',
+            'multiple': '4',
     }
 
     config['API_KEYS'] = {
@@ -35,6 +35,17 @@ def load():
                 '--really-quiet',
                 '--oset-metadata-set=comment="a"', '--no-terminal'],
     }
+
+    if os.name == 'nt':
+        dl_root_dir = os.getenv("CSIDL_DEFAULT_MYMUSIC")
+    else:
+        dl_root_dir = os.getenv("HOME")
+        if dl_root_dir != "": dl_root_dir += '/Music/'
+
+    if dl_root_dir == "":
+        dl_root_dir = "./"
+
+    config['DL_OPTIONS']['default_directory'] = dl_root_dir + "$artist/$album/"
 
     file_path = os.getenv('FMDPY_CONFIG_FILE') or \
         os.path.expanduser('~/.fmdpy.ini')

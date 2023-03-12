@@ -18,6 +18,14 @@ print("(Done)")
 
 # test
 os.mkdir('./tmp_test')
+
+os.environ['FMDPY_CONFIG_FILE'] = "./tmp_test/FMDPY.ini"
+subprocess.check_call([sys.executable, 'fmdpy', '-g'])
+print("##########FMDPY.ini#################")
+with open("./tmp_test/FMDPY.ini") as f:
+    print(f.read())
+print("####################################")
+
 args = [sys.executable, '-m', 'fmdpy', '-c', '10',
         '', '-d', 'tmp_test', '-f']
 with subprocess.Popen([*args, 'mp3'],

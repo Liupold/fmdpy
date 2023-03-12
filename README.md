@@ -118,7 +118,7 @@ the following must be set.
 |----------|---------------------------------------|
 | `$name`  | The Name of the song.                 |
 | `$album` | The Name of the album.                |
-| `$artist`| The Name of the album.                |
+| `$artist`| The Name of the artist.               |
 | `$year`  | Year the song was published.          |
 
 If the specified directory is absent it will be created
