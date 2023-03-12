@@ -128,6 +128,8 @@ Directory Example:
 default_directory = /home/<YOUR USERNAME>/Music/$artist/$album/
 ```
 
+## Streaming
+
 ```ini
 [STREAM]
 player_cmd =
