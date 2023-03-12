@@ -96,8 +96,8 @@ def fmdpy(count, search, fmt, bitrate, multiple,
 
     "fmdpy: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)\n
     "fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)\n
-    "fmdpy: }5", (This will find lyric of 5)\n
-    "fmdpy: ?<KEYWORD>", (This will search songs based on <KEYWORD>).\n
+    "fmdpy: L5", (This will find lyric of 5)\n
+    "fmdpy: /<KEYWORD>", (This will search songs based on <KEYWORD>).\n
 
     Streaming, downloading can also be mixed. If done so downloading
     will be done prior to streaming.
@@ -125,14 +125,14 @@ def fmdpy(count, search, fmt, bitrate, multiple,
             if prompt_input in ('quit', 'exit'):
                 break
 
-            if prompt_input[0] == '?':
+            if prompt_input[0] == '/':
                 search = prompt_input[1:]
                 song_list = query(search, count)
                 for i, sng in enumerate(song_list):
                     print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
                 continue
 
-            if prompt_input[0] == '}':
+            if prompt_input[0] == 'L':
                 print(get_lyric(song_list[int(prompt_input[1:]) - 1]))
                 continue
 
