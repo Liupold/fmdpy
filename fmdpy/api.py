@@ -6,8 +6,8 @@ from fmdpy.song import Song
 def get_song_urls(song_obj):
     """Fetch song download url."""
     req = requests.get(headers=headers,
-                       url=f"https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in\
-        &_marker=0%3F_marker%3D0&_format=json&pids={song_obj.songid}")
+                       url=f"https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in"
+        + "&_marker=0%3F_marker%3D0&_format=json&pids={song_obj.songid}")
     raw_json = req.json()[song_obj.songid]
     if 'media_preview_url' in raw_json.keys():
         song_obj.url = raw_json['media_preview_url'].\
@@ -63,8 +63,8 @@ def query_songs_seacrh(query_text, max_results=5):
     req = requests.get(
         headers=headers,
         url=f"https://www.jiosaavn.com/api.php?p=1&q={query_text.replace(' ', '+')}" \
-            + f"&_format=json&_marker=0&api_version=4&ctx=wap6dot0" \
-            + f"&n={max_results}&__call=search.getResults")
+            + "&_format=json&_marker=0&api_version=4&ctx=wap6dot0" \
+            + "&n={max_results}&__call=search.getResults")
 
     return parse_search_query(req.json())
 
@@ -76,8 +76,7 @@ def query_song_from_url(query_url):
     req = requests.get(
         headers=headers,
         url=f"https://www.jiosaavn.com/api.php?__call=webapi.get&token={token}&" \
-                + f"type=song&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
-    query_json = req.json()
+                + "type=song&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
     #print(json.dumps(query_json, indent = 1))
     return parse_url_query(req.json())
 
@@ -89,7 +88,7 @@ def query_album_from_url(query_url):
     req = requests.get(
         headers=headers,
         url=f"https://www.jiosaavn.com/api.php?__call=webapi.get&token={token}" \
-                + f"&type=album&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
+                + "&type=album&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
     return parse_url_query(req.json())
 
 

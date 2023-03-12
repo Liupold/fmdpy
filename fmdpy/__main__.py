@@ -163,7 +163,7 @@ def fmdpy(count, search, fmt, bitrate, multiple,
                                  filename=filename, silent=False)
                 return status
 
-            with ThreadPoolExecutor(max_workers=multiple, \
+            with ThreadPoolExecutor(max_workers=multiple,
                     initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)) as exe:
                 exe.map(download, download_pool)
 

@@ -12,7 +12,7 @@ def player(sng):
     print('Playing:', sng.title + ' [' + sng.artist + '] ...')
     player_cmd = ast.literal_eval(config['STREAM']['player_cmd'])
     for i, string in enumerate(player_cmd):
-        string = utils.resolve_string(string)
+        string = utils.resolve_string(sng, string)
         string = string.replace('$audio', sng.url)
         string = string.replace('$cover', sng.thumb_url)
         string = string.replace('$title', sng.title + ' [' + sng.artist + ']')

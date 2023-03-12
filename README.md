@@ -125,7 +125,7 @@ If the specified directory is absent it will be created
 recursively.
 
 Directory Example:
-```
+```ini
 default_directory = /home/<YOUR USERNAME>/Music/$artist/$album/
 ```
 
