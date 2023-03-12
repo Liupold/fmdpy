@@ -63,9 +63,9 @@ def query_songs_seacrh(query_text, max_results=5):
 
     req = requests.get(
         headers=headers,
-        url=f"https://www.jiosaavn.com/api.php?p=1&q={query_text.replace(' ', '+')}\
-            &_format=json&_marker=0&api_version=4&ctx=wap6dot0\
-            &n={max_results}&__call=search.getResults")
+        url=f"https://www.jiosaavn.com/api.php?p=1&q={query_text.replace(' ', '+')}" \
+            + f"&_format=json&_marker=0&api_version=4&ctx=wap6dot0" \
+            + f"&n={max_results}&__call=search.getResults")
 
     return parse_search_query(req.json())
 
@@ -76,8 +76,8 @@ def query_song_from_url(query_url):
     token = query_url.split('/')[-1]
     req = requests.get(
         headers=headers,
-        url=f"https://www.jiosaavn.com/api.php?__call=webapi.get&token={token}&\
-                type=song&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
+        url=f"https://www.jiosaavn.com/api.php?__call=webapi.get&token={token}&" \
+                + f"type=song&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
     query_json = req.json()
     #print(json.dumps(query_json, indent = 1))
     return parse_url_query(req.json())
@@ -89,8 +89,8 @@ def query_album_from_url(query_url):
     token = query_url.split('/')[-1]
     req = requests.get(
         headers=headers,
-        url=f"https://www.jiosaavn.com/api.php?__call=webapi.get&token={token}\
-                &type=album&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
+        url=f"https://www.jiosaavn.com/api.php?__call=webapi.get&token={token}" \
+                + f"&type=album&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
     return parse_url_query(req.json())
 
 
@@ -101,4 +101,3 @@ def query(query_string, max_results=5):
     elif query_string[:31] == "https://www.jiosaavn.com/album/":
         return query_album_from_url(query_string)
     return query_songs_seacrh(query_string, max_results)
-
