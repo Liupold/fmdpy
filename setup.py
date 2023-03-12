@@ -1,5 +1,5 @@
 import setuptools
-from fmdpy import VERSION
+from fmdpy import VERSION, install_requires
 
 
 with open("README.md", "r") as fh:
@@ -17,7 +17,7 @@ setuptools.setup(
     license='GPLv3',
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=['ffmpeg-python', 'click', 'music-tag>=0.4.3', 'requests', 'pillow', 'lyricsgenius', 'dataclasses', 'spotipy'],
+    install_requires=install_requires,
     entry_points = {
         'console_scripts': ['fmdpy=fmdpy.__main__:fmdpy'],
     },
@@ -27,5 +27,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Development Status :: 5 - Production/Stable"
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.7',
 )

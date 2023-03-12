@@ -6,6 +6,7 @@ import requests
 import ffmpeg
 import music_tag
 import lyricsgenius
+from tqdm import tqdm
 from fmdpy import headers, config
 
 # download file
@@ -22,22 +23,21 @@ def dlf(url, file_name, silent=0, dltext=""):
         else:
             dl_length = 0
             total_length = int(total_length)
-            for data in response.iter_content(chunk_size=4096):
-                dl_length += len(data)
-                file_obj.write(data)
-                done = int(50 * dl_length / total_length)
-                sys.stdout.write("\r%s[%s%s](%.2f%%)" % (
-                    dltext, '=' * done, ' ' * (50 - done),
-                            (dl_length / total_length) * 100))
-                sys.stdout.flush()
-
-    if not silent:
-        print("\tdone.")
-
+            with tqdm(desc=dltext, total=total_length, \
+                    leave=False, unit_scale=True, unit='B') as pbar:
+                for data in response.iter_content(chunk_size=4096):
+                    pbar.update(file_obj.write(data))
+                # dl_length = len(data)
+                #done = int(50 * dl_length / total_length)
+                #sys.stdout.write("\r%s[%s%s](%.2f%%)" % (
+                #    dltext, '=' * done, ' ' * (50 - done),
+                #            (dl_length / total_length) * 100))
+                #sys.stdout.flush()
 
 def get_lyric(song_obj):
     """Get lyric."""
     genius = lyricsgenius.Genius(config['API_KEYS']['lyricsgenius'])
+    genius.verbose = False
     song = genius.search_song(song_obj.title, song_obj.artist)
     if song:
         return song.lyrics
@@ -67,14 +67,11 @@ def main_dl(
             if os.path.isfile(output_file):
                 print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
                 return False
-            dlf(song_obj.url, tf_song.name, dltext="SONG:", silent=silent)
-            dlf(song_obj.thumb_url, tf_thumb.name, dltext="ART :", silent=silent)
+            dlf(song_obj.url, tf_song.name, dltext=f"SONG: ({song_obj.title})", silent=silent)
+            dlf(song_obj.thumb_url, tf_thumb.name, dltext="ART ({song_obj.title}):", silent=silent)
 
             if dlformat != 'native':
                 output_file += f".{dlformat}"
-                if not silent:
-                    sys.stdout.write("Convering to %s..." % dlformat)
-                    sys.stdout.flush()
                 # convert to desired format.
                 (
                     ffmpeg
@@ -83,9 +80,6 @@ def main_dl(
                     .global_args('-loglevel', 'error', '-vn')
                     .run()
                 )
-                if not silent:
-                    sys.stdout.write("done\n")
-                    sys.stdout.flush()
             else:
                 output_file += '.mp4'
                 if not os.path.isfile(output_file):
@@ -97,9 +91,6 @@ def main_dl(
                     return False
 
             # add music tags
-            if not silent:
-                sys.stdout.write("Adding Metadata...")
-                sys.stdout.flush()
             file_obj = music_tag.load_file(output_file)
             file_obj['year'] = song_obj.year
             file_obj['title'] = song_obj.title
@@ -114,9 +105,7 @@ def main_dl(
                 if song_lyric:
                     file_obj['lyrics'] = song_lyric
             file_obj.save()
-            if not silent:
-                sys.stdout.write("done\n")
-                sys.stdout.flush()
     if len(to_delete) > 0:
         _ = [os.unlink(fname) for fname in to_delete]
     return True
+

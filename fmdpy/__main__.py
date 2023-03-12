@@ -3,7 +3,9 @@ import os
 import sys
 import ast
 import subprocess
+from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
+from threading import RLock as TRLock
 from fmdpy import VERSION, install_requires, config, stream
 
 if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
@@ -94,8 +96,8 @@ def fmdpy(count, search, fmt, bitrate, multiple,
 
     "fmdpy: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)\n
     "fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)\n
-    "fmdpy: }5", (This will find lyric of 5)\n
-    "fmdpy: ?<KEYWORD>", (This will search songs based on <KEYWORD>).\n
+    "fmdpy: L5", (This will find lyric of 5)\n
+    "fmdpy: /<KEYWORD>", (This will search songs based on <KEYWORD>).\n
 
     Streaming, downloading can also be mixed. If done so downloading
     will be done prior to streaming.
@@ -123,14 +125,14 @@ def fmdpy(count, search, fmt, bitrate, multiple,
             if prompt_input in ('quit', 'exit'):
                 break
 
-            if prompt_input[0] == '?':
+            if prompt_input[0] == '/':
                 search = prompt_input[1:]
                 song_list = query(search, count)
                 for i, sng in enumerate(song_list):
                     print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
                 continue
 
-            if prompt_input[0] == '}':
+            if prompt_input[0] == 'L':
                 print(get_lyric(song_list[int(prompt_input[1:]) - 1]))
                 continue
 
@@ -153,29 +155,14 @@ def fmdpy(count, search, fmt, bitrate, multiple,
             def download(i):
                 sng = song_list[i]
                 get_song_urls(sng)
-
-                if multiple <= 1:
-                    print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
-
                 status = main_dl(sng, dlformat=fmt, bitrate=bitrate,
                                  addlyrics=lyrics, directory=directory,
-                                 silent=(multiple > 1))
-
-                if status and (multiple > 1):
-                    print(f'Downloaded: \
-                          {i+1}) {sng.title} [{sng.artist}] ({sng.year})')
-
-                if not status:
-                    print(f'Unable to download: {i+1})' +
-                          f'{sng.title} [{sng.artist}] ({sng.year})')
+                                 silent=False)
                 return status
 
-            if multiple > 1:
-                with ThreadPoolExecutor(max_workers=multiple) as exe:
-                    exe.map(download, download_pool)
-            else:
-                for i in download_pool:
-                    download(i)
+            with ThreadPoolExecutor(max_workers=multiple, \
+                    initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)) as exe:
+                exe.map(download, download_pool)
 
             for i in stream_pool:
                 sng = song_list[i]
@@ -183,8 +170,10 @@ def fmdpy(count, search, fmt, bitrate, multiple,
                 stream.player(sng)
         else:
             print(f"No result for: {search}")
+            break
 
 
 if __name__ == '__main__':
     # pylint: disable=no-value-for-parameter
+    tqdm.set_lock(TRLock())
     fmdpy()
