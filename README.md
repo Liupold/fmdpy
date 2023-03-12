@@ -110,9 +110,8 @@ lyricsgenius =
 ```
 ## Filename and directory
 file name are directory format can be specified using
-special characters
+special characters (version 0.6+)
 
-For Streaming (version: 0.5+) is required and
 the following must be set.
 | Strings  | Replaced By                           |
 |----------|---------------------------------------|
@@ -130,6 +129,7 @@ default_directory = /home/<YOUR USERNAME>/Music/$artist/$album/
 ```
 
 ## Streaming
+For Streaming (version: 0.5+) is required and
 
 ```ini
 [STREAM]
