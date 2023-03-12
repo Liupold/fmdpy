@@ -2,7 +2,6 @@
 import requests
 from fmdpy import headers, ART
 from fmdpy.song import Song
-import json
 
 def get_song_urls(song_obj):
     """Fetch song download url."""
@@ -100,4 +99,6 @@ def query(query_string, max_results=5):
         return query_song_from_url(query_string)
     elif query_string[:31] == "https://www.jiosaavn.com/album/":
         return query_album_from_url(query_string)
+    if query_string == "":
+        query_string = "new"
     return query_songs_seacrh(query_string, max_results)
