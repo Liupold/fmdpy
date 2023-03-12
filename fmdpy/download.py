@@ -64,7 +64,7 @@ def main_dl(
             directory = utils.resolve_string(song_obj, directory)
             os.makedirs(directory, exist_ok=True)
             filename = utils.slugify(utils.resolve_string(song_obj, filename))
-            output_file = directory + filename
+            output_file = directory + '/' + filename
             print(output_file)
 
             if os.path.isfile(output_file):

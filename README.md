@@ -60,9 +60,9 @@ Usage: fmdpy [OPTIONS] [SEARCH]...
 
   "fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)
 
-  "fmdpy: }5", (This will find lyric of 5)
+  "fmdpy: L5", (This will find lyric of 5)
 
-  "fmdpy: ?<KEYWORD>", (This will search songs based on <KEYWORD>).
+  "fmdpy: /<KEYWORD>", (This will search songs based on <KEYWORD>).
 
   Streaming, downloading can also be mixed. If done so downloading will be
   done prior to streaming.
@@ -76,10 +76,11 @@ Options:
   -b, --bitrate INTEGER   Bitrate in kb, (250 is default)
   -m, --multiple INTEGER  number of concurrent downloads.
   -d, --directory PATH    Specify the folder.
+  -F, --filename TEXT     filename format.
   -l, --lyrics            Add lyrics
-  -V, --Version           display version
   -g, --gen               generate the config file.
   -u, --update            Update: (for pip only)
+  -v, --version           display version
   --help                  Show this message and exit.
 ```
 
