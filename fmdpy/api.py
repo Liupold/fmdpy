@@ -64,7 +64,7 @@ def query_songs_seacrh(query_text, max_results=5):
         headers=headers,
         url=f"https://www.jiosaavn.com/api.php?p=1&q={query_text.replace(' ', '+')}" \
             + "&_format=json&_marker=0&api_version=4&ctx=wap6dot0" \
-            + "&n={max_results}&__call=search.getResults")
+            + f"&n={max_results}&__call=search.getResults")
 
     return parse_search_query(req.json())
 
@@ -92,8 +92,9 @@ def query_album_from_url(query_url):
     return parse_url_query(req.json())
 
 
-def query(query_string="", max_results=5):
+def query(query_string, max_results=5):
     "This is whrere the text from the prompt comes!"
+    print(query_string)
     if query_string[:30] == "https://www.jiosaavn.com/song/":
         return query_song_from_url(query_string)
     elif query_string[:31] == "https://www.jiosaavn.com/album/":
