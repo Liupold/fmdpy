@@ -100,7 +100,7 @@ def fmdpy(count, search, fmt, bitrate, multiple,
     "fmdpy: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)\n
     "fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)\n
     "fmdpy: L5", (This will find lyric of 5)\n
-    "fmdpy: /<KEYWORD>", (This will search songs based on <KEYWORD>).\n
+    "fmdpy: /<SEARCH/URL>", (This will search songs based on <SEARCH/URL>).\n
 
     Streaming, downloading can also be mixed. If done so downloading
     will be done prior to streaming.

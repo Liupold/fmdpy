@@ -48,7 +48,7 @@ fmdpy -u
 
 ## USAGE
 ```text
-Usage: fmdpy [OPTIONS] [SEARCH]...
+Usage: fmdpy [OPTIONS] [SEARCH/URL]...
 
   FMDPY.
 
@@ -62,7 +62,7 @@ Usage: fmdpy [OPTIONS] [SEARCH]...
 
   "fmdpy: L5", (This will find lyric of 5)
 
-  "fmdpy: /<KEYWORD>", (This will search songs based on <KEYWORD>).
+  "fmdpy: /<SEARCH/URL>", (This will search songs based on <SEARCH/URL>).
 
   Streaming, downloading can also be mixed. If done so downloading will be
   done prior to streaming.
