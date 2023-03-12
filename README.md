@@ -107,10 +107,26 @@ It can also add lyrics from lyricsgenius into the meta data given the following 
 [API_KEYS]
 lyricsgenius =
 ```
+## Filename and directory
+file name are directory format can be specified using
+special characters
 
-## Streaming
 For Streaming (version: 0.5+) is required and
 the following must be set.
+| Strings  | Replaced By                           |
+|----------|---------------------------------------|
+| `$name`  | The Name of the song.                 |
+| `$album` | The Name of the album.                |
+| `$artist`| The Name of the album.                |
+| `$year`  | Year the song was published.          |
+
+If the specified directory is absent it will be created
+recursively.
+
+Directory Example:
+```
+default_directory = /home/<YOUR USERNAME>/Music/$artist/$album/
+```
 
 ```ini
 [STREAM]
@@ -123,7 +139,7 @@ in `player_cmd` The following strings will be replaced:
 |----------|---------------------------------------|
 | `$audio` | The URL of the music file.            |
 | `$cover` | The URL of the cover art file. (JPEG) |
-| `$title` | SONG_NAME \[ARTIST_NAME\]               |
+| `$title` | SONG_NAME \[ARTIST_NAME\]             |
 
 ### vlc example
 `player_cmd = ['vlc', '$audio']`

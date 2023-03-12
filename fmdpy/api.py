@@ -93,7 +93,7 @@ def query_album_from_url(query_url):
     return parse_url_query(req.json())
 
 
-def query(query_string, max_results=5):
+def query(query_string="", max_results=5):
     "This is whrere the text from the prompt comes!"
     if query_string[:30] == "https://www.jiosaavn.com/song/":
         return query_song_from_url(query_string)

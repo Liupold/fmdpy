@@ -7,9 +7,7 @@ import ffmpeg
 import music_tag
 import lyricsgenius
 from tqdm import tqdm
-from fmdpy import headers, config
-
-# download file
+from fmdpy import headers, config, utils
 
 
 def dlf(url, file_name, silent=0, dltext=""):
@@ -50,6 +48,7 @@ def main_dl(
         bitrate=250,
         addlyrics=0,
         directory="./",
+        filename="$artist-$name-$year",
         silent=0):
     """Main download function for fmdpy."""
     to_delete = []
@@ -62,8 +61,12 @@ def main_dl(
                 to_delete.append(tf_song.name)
                 to_delete.append(tf_thumb.name)
 
-            output_file = directory + f"/{song_obj.artist}-{song_obj.title}({song_obj.year})"\
-                .replace(' ', '_').lower()
+            directory = utils.resolve_string(song_obj, directory)
+            os.makedirs(directory, exist_ok=True)
+            filename = utils.slugify(utils.resolve_string(song_obj, filename))
+            output_file = directory + filename
+            print(output_file)
+
             if os.path.isfile(output_file):
                 print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
                 return False
@@ -108,4 +111,3 @@ def main_dl(
     if len(to_delete) > 0:
         _ = [os.unlink(fname) for fname in to_delete]
     return True
-

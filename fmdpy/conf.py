@@ -18,6 +18,7 @@ def load():
             'lyrics': "False",
             'bitrate': '250',
             'default_directory': "./",
+            'filename': "$artist-$name-$year",
             'multiple': '1',
     }
 

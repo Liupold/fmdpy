@@ -70,7 +70,10 @@ def version(ctx, _, value):
 
 @click.option('-d', "--directory",
               default=config['DL_OPTIONS']['default_directory'],
-              help="Specify the folder.", type=click.Path(exists=True))
+              help="Specify the folder.", type=click.Path())
+
+@click.option('-F', "--filename", default=config['DL_OPTIONS']['filename'],
+              help="filename format.")
 
 @click.option('-l', "--lyrics", help="Add lyrics",
               default=ast.literal_eval(config['DL_OPTIONS']['lyrics']),
@@ -88,7 +91,7 @@ def version(ctx, _, value):
 @click.argument('search', nargs=-1)
 
 def fmdpy(count, search, fmt, bitrate, multiple,
-        lyrics, directory):
+        lyrics, directory, filename):
     """FMDPY.
 
     Download music with metadata\n
@@ -157,7 +160,7 @@ def fmdpy(count, search, fmt, bitrate, multiple,
                 get_song_urls(sng)
                 status = main_dl(sng, dlformat=fmt, bitrate=bitrate,
                                  addlyrics=lyrics, directory=directory,
-                                 silent=False)
+                                 filename=filename, silent=False)
                 return status
 
             with ThreadPoolExecutor(max_workers=multiple, \
