@@ -6,8 +6,8 @@ from fmdpy.song import Song
 def get_song_urls(song_obj):
     """Fetch song download url."""
     req = requests.get(headers=headers,
-                       url=f"https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in"
-        + "&_marker=0%3F_marker%3D0&_format=json&pids={song_obj.songid}")
+                       url=f"https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in" \
+                               + "&_marker=0%3F_marker%3D0&_format=json&pids={song_obj.songid}")
     raw_json = req.json()[song_obj.songid]
     if 'media_preview_url' in raw_json.keys():
         song_obj.url = raw_json['media_preview_url'].\

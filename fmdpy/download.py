@@ -1,6 +1,6 @@
 """Downloader for fmdpy."""
 import os
-import sys
+#import sys
 import tempfile
 import requests
 import ffmpeg
@@ -19,7 +19,7 @@ def dlf(url, file_name, silent=0, dltext=""):
         if (total_length is None) or (silent):  # no content length header
             file_obj.write(response.content)
         else:
-            dl_length = 0
+            #dl_length = 0
             total_length = int(total_length)
             with tqdm(desc=dltext, total=total_length, \
                     leave=False, unit_scale=True, unit='B') as pbar:
