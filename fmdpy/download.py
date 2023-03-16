@@ -17,8 +17,9 @@ def convert_audio_to_mp3(input_file_path, output_file_path, bitrate):
     process = subprocess.Popen(command, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
-    print(stdout.decode('utf-8'))
-    print(stderr.decode('utf-8'))
+    if process.returncode != 0:
+        print(stdout.decode('utf-8'))
+        print(stderr.decode('utf-8'))
 
 def dlf(url, file_name, silent=0, dltext=""):
     """Download a file to a specified loaction."""
