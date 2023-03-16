@@ -11,7 +11,7 @@ from tqdm import tqdm
 from fmdpy import config, headers, utils
 
 
-convert_audio_to_mp3(input_file_path, output_file_path, bitrate):
+def convert_audio_to_mp3(input_file_path, output_file_path, bitrate):
     command = ['ffmpeg', '-i', input_file_path, '-codec:a', 'libmp3lame',
                '-b:a', bitrate, output_file_path]
     try:
