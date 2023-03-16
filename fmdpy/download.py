@@ -86,15 +86,8 @@ def main_dl(
 
             if dlformat != 'native':
                 output_file += f".{dlformat}"
-                convert_audio_to_mp3(tf_song.name, output_file, f'{bitrate}k')
                 # convert to desired format.
-                # (
-                #     ffmpeg
-                #     .input(tf_song.name)
-                #     .output(output_file, **{'b:a': f'{bitrate}k'})
-                #     .global_args('-loglevel', 'error', '-vn')
-                #     .run()
-                # )
+                convert_audio_to_mp3(tf_song.name, output_file, f'{bitrate}k')
             else:
                 output_file += '.mp4'
                 if not os.path.isfile(output_file):
