@@ -15,9 +15,9 @@ def convert_audio_to_mp3(input_file_path, output_file_path, bitrate):
     command = ['ffmpeg', '-i', input_file_path, '-codec:a', 'libmp3lame',
                '-b:a', bitrate, output_file_path]
     try:
-
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
+        print("converted to mp3")
     except:
         print(stdout.decode('utf-8'))
         print(stderr.decode('utf-8'))
