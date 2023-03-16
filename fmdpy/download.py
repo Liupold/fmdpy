@@ -17,7 +17,7 @@ def convert_audio_to_mp3(input_file_path, output_file_path, bitrate):
     process = subprocess.Popen(command, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
-    if process.returncode != 0:
+    if not os.path.isfile(output_file_path):
         print("Error while converting audio file")
         print(stdout.decode('utf-8'))
         print(stderr.decode('utf-8'))
