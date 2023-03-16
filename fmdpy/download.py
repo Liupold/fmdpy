@@ -1,14 +1,23 @@
 """Downloader for fmdpy."""
 import os
-#import sys
+import subprocess
 import tempfile
-import requests
-import ffmpeg
-import music_tag
-import lyricsgenius
-from tqdm import tqdm
-from fmdpy import headers, config, utils
 
+import ffmpeg
+import lyricsgenius
+import music_tag
+import requests
+from tqdm import tqdm
+
+from fmdpy import config, headers, utils
+
+
+def convert_audio_to_mp3(input_file_path, output_file_path):
+    command = ['ffmpeg', '-i', input_file_path, '-codec:a', 'libmp3lame', '-qscale:a', '2', output_file_path]
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+    print(stdout.decode('utf-8'))
+    print(stderr.decode('utf-8'))
 
 def dlf(url, file_name, silent=0, dltext=""):
     """Download a file to a specified loaction."""
@@ -75,14 +84,15 @@ def main_dl(
 
             if dlformat != 'native':
                 output_file += f".{dlformat}"
+                convert_audio_to_mp3(tf_song.name, output_file)
                 # convert to desired format.
-                (
-                    ffmpeg
-                    .input(tf_song.name)
-                    .output(output_file, **{'b:a': f'{bitrate}k'})
-                    .global_args('-loglevel', 'error', '-vn')
-                    .run()
-                )
+                # (
+                #     ffmpeg
+                #     .input(tf_song.name)
+                #     .output(output_file, **{'b:a': f'{bitrate}k'})
+                #     .global_args('-loglevel', 'error', '-vn')
+                #     .run()
+                # )
             else:
                 output_file += '.mp4'
                 if not os.path.isfile(output_file):
