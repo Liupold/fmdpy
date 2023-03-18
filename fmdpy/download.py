@@ -1,25 +1,33 @@
 """Downloader for fmdpy."""
 import os
-import subprocess
 import tempfile
 
 import lyricsgenius
 import music_tag
 import requests
+from pydub import AudioSegment
 from tqdm import tqdm
 
 from fmdpy import config, headers, utils
 
-
-def convert_audio_to_mp3(input_file_path, output_file_path, bitrate):
-    command = ['ffmpeg', '-i', input_file_path, '-codec:a', 'libmp3lame',
-               '-b:a', bitrate, output_file_path]
-    process = subprocess.Popen(command, stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
-    stdout, stderr = process.communicate()
-    if process.returncode != 0:
-        print(stdout.decode('utf-8'))
-        print(stderr.decode('utf-8'))
+def convert_audio(input_file_path, output_file_path, bitrate):
+    try:
+        input_audio = AudioSegment.from_file(input_file_path)
+    except FileNotFoundError:
+        print(f"Input file {input_file_path} not found.")
+        return
+    except Exception as e:
+        print(f"Error reading input file {input_file_path}: {e}")
+        return
+    try:
+        input_audio.export(output_file_path, format=output_file_path.
+                           split('.')[-1], bitrate=bitrate)
+    except FileNotFoundError:
+        print(f"Output file path {output_file_path} not found.")
+        return
+    except Exception as e:
+        print(f"Error writing output file {output_file_path}: {e}")
+        return
 
 def dlf(url, file_name, silent=0, dltext=""):
     """Download a file to a specified loaction."""
@@ -87,7 +95,7 @@ def main_dl(
             if dlformat != 'native':
                 output_file += f".{dlformat}"
                 # convert to desired format.
-                convert_audio_to_mp3(tf_song.name, output_file, f'{bitrate}k')
+                convert_audio(tf_song.name, output_file, f'{bitrate}k')
             else:
                 output_file += '.mp4'
                 if not os.path.isfile(output_file):
