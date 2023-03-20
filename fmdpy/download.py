@@ -1,14 +1,32 @@
 """Downloader for fmdpy."""
 import os
-#import sys
 import tempfile
-import requests
-import ffmpeg
-import music_tag
-import lyricsgenius
-from tqdm import tqdm
-from fmdpy import headers, config, utils
 
+import lyricsgenius
+import music_tag
+import requests
+from pydub import AudioSegment
+from tqdm import tqdm
+
+from fmdpy import config, headers, utils
+
+def convert_audio(input_file_path, output_file_path, bitrate, dlformat):
+    try:
+        input_audio = AudioSegment.from_file(input_file_path, "mp4")
+    except FileNotFoundError:
+        print(f"Input file {input_file_path} not found.")
+        return
+    except Exception as e:
+        print(f"Error reading input file {input_file_path}: {e}")
+        return
+    try:
+        input_audio.export(output_file_path, format=dlformat, bitrate=bitrate)
+    except FileNotFoundError:
+        print(f"Output file path {output_file_path} not found.")
+        return
+    except Exception as e:
+        print(f"Error writing output file {output_file_path}: {e}")
+        return
 
 def dlf(url, file_name, silent=0, dltext=""):
     """Download a file to a specified loaction."""
@@ -76,13 +94,7 @@ def main_dl(
             if dlformat != 'native':
                 output_file += f".{dlformat}"
                 # convert to desired format.
-                (
-                    ffmpeg
-                    .input(tf_song.name)
-                    .output(output_file, **{'b:a': f'{bitrate}k'})
-                    .global_args('-loglevel', 'error', '-vn')
-                    .run()
-                )
+                convert_audio(tf_song.name, output_file, f'{bitrate}k', dlformat)
             else:
                 output_file += '.mp4'
                 if not os.path.isfile(output_file):
