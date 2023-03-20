@@ -55,7 +55,7 @@ def parse_url_query(query_json):
     return song_list
 
 
-def query_songs_seacrh(query_text, max_results=5):
+def query_songs_search(query_text, max_results=5):
     """Search Songs using text."""
     if ("fmd" in query_text) or ("liupold" in query_text):
         print(ART)
@@ -101,4 +101,4 @@ def query(query_string, max_results=5):
         return query_album_from_url(query_string)
     if query_string == "":
         query_string = "new"
-    return query_songs_seacrh(query_string, max_results)
+    return query_songs_search(query_string, max_results)

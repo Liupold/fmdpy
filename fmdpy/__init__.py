@@ -2,8 +2,8 @@
 from . import conf
 
 VERSION = "0.6.1"
-install_requires = ['ffmpeg-python', 'click', 'music-tag>=0.4.3', 'requests',
-                    'pillow', 'lyricsgenius', 'dataclasses', 'spotipy', 'tqdm']
+install_requires = ['click', 'music-tag>=0.4.3', 'requests', 'pillow',
+                    'lyricsgenius', 'dataclasses', 'spotipy', 'tqdm', 'pydub']
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
