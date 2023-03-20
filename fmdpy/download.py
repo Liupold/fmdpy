@@ -12,7 +12,7 @@ from fmdpy import config, headers, utils
 
 def convert_audio(input_file_path, output_file_path, bitrate, dlformat):
     try:
-        input_audio = AudioSegment.from_file(input_file_path)
+        input_audio = AudioSegment.from_file(input_file_path, "mp4")
     except FileNotFoundError:
         print(f"Input file {input_file_path} not found.")
         return
