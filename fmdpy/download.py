@@ -40,7 +40,7 @@ def dlf(url, file_name, silent=0, dltext=""):
             #dl_length = 0
             total_length = int(total_length)
             with tqdm(desc=dltext, total=total_length, \
-                    leave=False, unit_scale=True, unit='B') as pbar:
+                    leave=True, unit_scale=True, unit='B') as pbar:
                 for data in response.iter_content(chunk_size=4096):
                     pbar.update(file_obj.write(data))
                 # dl_length = len(data)
@@ -83,13 +83,12 @@ def main_dl(
             os.makedirs(directory, exist_ok=True)
             filename = utils.slugify(utils.resolve_string(song_obj, filename))
             output_file = directory + '/' + filename
-            print(output_file)
 
             if os.path.isfile(output_file):
                 print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
                 return False
             dlf(song_obj.url, tf_song.name, dltext=f"SONG: ({song_obj.title})", silent=silent)
-            dlf(song_obj.thumb_url, tf_thumb.name, dltext="ART ({song_obj.title}):", silent=silent)
+            dlf(song_obj.thumb_url, tf_thumb.name, dltext=f"ART : ({song_obj.title})", silent=silent)
 
             if dlformat != 'native':
                 output_file += f".{dlformat}"
