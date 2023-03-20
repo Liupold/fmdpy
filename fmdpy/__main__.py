@@ -6,7 +6,7 @@ import subprocess
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
 from threading import RLock as TRLock
-from fmdpy import VERSION, install_requires, config, stream
+from fmdpy import ART, VERSION, install_requires, config, stream
 
 if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
     subprocess.check_call([sys.executable, '-m', 'pip',
@@ -47,6 +47,7 @@ def version(ctx, _, value):
     if not value:
         return
     else:
+        click.echo(ART)
         click.echo(f"fmdpy: {VERSION} ({sys.executable})")
         ctx.exit()
 

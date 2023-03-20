@@ -1,9 +1,12 @@
 import setuptools
-from fmdpy import VERSION, install_requires
+from fmdpy import ART, VERSION, install_requires
 
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
+
+print("Setting up...")
+print(ART)
 
 setuptools.setup(
     name="fmdpy",
