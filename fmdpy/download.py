@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 from fmdpy import config, headers, utils
 
-def convert_audio(input_file_path, output_file_path, bitrate):
+def convert_audio(input_file_path, output_file_path, bitrate, dlformat):
     try:
         input_audio = AudioSegment.from_file(input_file_path)
     except FileNotFoundError:
@@ -20,8 +20,7 @@ def convert_audio(input_file_path, output_file_path, bitrate):
         print(f"Error reading input file {input_file_path}: {e}")
         return
     try:
-        input_audio.export(output_file_path, format=output_file_path.
-                           split('.')[-1], bitrate=bitrate)
+        input_audio.export(output_file_path, format=dlformat, bitrate=bitrate)
     except FileNotFoundError:
         print(f"Output file path {output_file_path} not found.")
         return
@@ -95,7 +94,7 @@ def main_dl(
             if dlformat != 'native':
                 output_file += f".{dlformat}"
                 # convert to desired format.
-                convert_audio(tf_song.name, output_file, f'{bitrate}k')
+                convert_audio(tf_song.name, output_file, f'{bitrate}k', dlformat)
             else:
                 output_file += '.mp4'
                 if not os.path.isfile(output_file):
