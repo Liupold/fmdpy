@@ -1,9 +1,10 @@
 """fmdpy."""
 from . import conf
 
-VERSION = "0.6.2"
+VERSION = "0.6.3"
 install_requires = ['click', 'music-tag>=0.4.3', 'requests', 'pillow',
-                    'lyricsgenius', 'dataclasses', 'spotipy', 'tqdm', 'pydub']
+                    'lyricsgenius', 'dataclasses', 'spotipy', 'tqdm', 'pydub',
+                    'pycryptodome']
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +

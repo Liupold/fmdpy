@@ -2,19 +2,25 @@
 import requests
 from fmdpy import headers, ART
 from fmdpy.song import Song
+from Crypto.Cipher import DES
+import base64 as bs64
 
 def get_song_urls(song_obj):
     """Fetch song download url."""
     req = requests.get(headers=headers,
-                       url="https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in" \
-                               + f"&_marker=0%3F_marker%3D0&_format=json&pids={song_obj.songid}")
-    raw_json = req.json()[song_obj.songid]
-    if 'media_preview_url' in raw_json.keys():
-        song_obj.url = raw_json['media_preview_url'].\
-            replace('https://preview.saavncdn.com/', 'https://aac.saavncdn.com/').\
-            replace('_96_p.mp4', '_320.mp4')
+                       url="https://www.jiosaavn.com/api.php?__call=song.getDetails" \
+                               + f"&ctx=web6dot0&_marker=0&_format=json&pids={song_obj.songid}")
+
+    raw_json = req.json()['songs'][0]
+    if 'encrypted_media_url' in raw_json.keys():
+        key = '38346591'.encode('utf-8')
+        dciper = DES.new(key, DES.MODE_ECB)
+        decrypted = dciper.decrypt(bs64.b64decode(raw_json['encrypted_media_url']))
+        song_obj.url = decrypted.replace(b'\x05', b'').decode().replace('_96', '_320')
         song_obj.thumb_url = raw_json['image'].replace(
             '-150x150.jpg', '-500x500.jpg')
+    print(raw_json)
+    print(song_obj)
 
 def parse_search_query(query_json):
     song_list = []
