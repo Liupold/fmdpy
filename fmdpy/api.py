@@ -1,9 +1,9 @@
 """api for fetching song metadata and url."""
+import base64 as bs64
 import requests
+from Crypto.Cipher import DES
 from fmdpy import headers, ART
 from fmdpy.song import Song
-from Crypto.Cipher import DES
-import base64 as bs64
 
 def get_song_urls(song_obj):
     """Fetch song download url."""
@@ -19,8 +19,6 @@ def get_song_urls(song_obj):
         song_obj.url = decrypted.replace(b'\x05', b'').decode().replace('_96', '_320')
         song_obj.thumb_url = raw_json['image'].replace(
             '-150x150.jpg', '-500x500.jpg')
-    print(raw_json)
-    print(song_obj)
 
 def parse_search_query(query_json):
     song_list = []
