@@ -48,21 +48,18 @@ fmdpy -u
 
 ## USAGE
 ```text
-Usage: fmdpy [OPTIONS] [SEARCH/URL]...
+Usage: fmdpy [OPTIONS] [SEARCH]...
 
   FMDPY.
 
   Download music with metadata
 
   For multiple download you can use something like:
-
   "fmdpy: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)
-
-  "fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)
-
-  "fmdpy: L5", (This will find lyric of 5)
-
-  "fmdpy: /<SEARCH/URL>", (This will search songs based on <SEARCH/URL>).
+  "fmdpy: 1.p, 2.p", (This will play (stream) 1, 2) (using player_cmd)
+  "fmdpy: 5.p", (This will find lyric of 5)
+  "fmdpy: 3.a", (This will go to album which 3 belongs to)
+  "fmdpy: <SEARCH/URL>", (This will search songs based on <SEARCH/URL>).
 
   Streaming, downloading can also be mixed. If done so downloading will be
   done prior to streaming.
@@ -81,7 +78,7 @@ Options:
   -g, --gen               generate the config file.
   -u, --update            Update: (for pip only)
   -v, --version           display version
-  --help                  Show this message and exit.
+  --help                  Show this message and exit
 ```
 
 ## CONFIG
