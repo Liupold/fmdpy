@@ -17,6 +17,7 @@ try:
     import click
     from fmdpy.prompt import run_prompt, find_songs
     from fmdpy.api import query
+    from fmdpy import config
 except ModuleNotFoundError:
     print("Requirements missing, possible fix:\n\tfmdpy -u")
     print("Report to: https://github.com/liupold/fmdpy/issues")
@@ -117,7 +118,8 @@ def fmdpy(count, search, fmt, bitrate, multiple,
 
     song_list = find_songs(search, count)
     while True:
-        song_list = run_prompt(input("FMDPY>> "), song_list, multiple, count)
+        song_list = run_prompt(input("FMDPY>> "), song_list, multiple, count,\
+                fmt, bitrate, lyrics, directory, filename)
 
 
 if __name__ == '__main__':
