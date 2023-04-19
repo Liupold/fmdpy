@@ -24,17 +24,19 @@ def parse_search_query(query_json):
     song_list = []
     for sng_raw in query_json['results']:
         song_id = sng_raw['id']
-        song_title = sng_raw['title']
+        song_title = sng_raw['song']
         song_year = sng_raw['year']
-        song_album = sng_raw['more_info']['album']
-        song_copyright = sng_raw['more_info']['copyright_text']
-        if len(sng_raw['more_info']['artistMap']['primary_artists']) != 0:
-            song_artist = sng_raw['more_info']['artistMap']['primary_artists'][0]['name']
+        song_album = sng_raw['album']
+        song_copyright = sng_raw['copyright_text']
+        if len(sng_raw['primary_artists']) != 0:
+            song_artist = sng_raw['primary_artists']
         else:
             song_artist = "Unknown"
+        song_album_url = sng_raw['album_url']
         song_ = Song(songid=song_id,
                      title=song_title, artist=song_artist, year=song_year,
-                     album=song_album, copyright=song_copyright)
+                     album=song_album, copyright=song_copyright,
+                     album_url=song_album_url)
         song_list.append(song_)
     return song_list
 
@@ -67,9 +69,8 @@ def query_songs_search(query_text, max_results=5):
     req = requests.get(
         headers=headers,
         url=f"https://www.jiosaavn.com/api.php?p=1&q={query_text.replace(' ', '+')}" \
-            + "&_format=json&_marker=0&api_version=4&ctx=wap6dot0" \
+            + "&_format=json&_marker=0&ctx=wap6dot0" \
             + f"&n={max_results}&__call=search.getResults")
-
     return parse_search_query(req.json())
 
 

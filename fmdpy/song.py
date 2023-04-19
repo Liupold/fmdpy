@@ -11,6 +11,7 @@ class Song:
     songid: str
     title: str = "Unknown"
     album: str = "Unknown"
+    album_url: str = "Unknown"
     artist: str = "Unknown"
     year: str = "Unknown"
     copyright: str = "Unknown"

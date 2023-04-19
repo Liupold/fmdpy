@@ -15,9 +15,8 @@ if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
 
 try:
     import click
-    from fmdpy.api import query, get_song_urls
-    from fmdpy.download import main_dl, get_lyric
-    from fmdpy.splist import pl_spotify_dl
+    from fmdpy.prompt import run_prompt, find_songs
+    from fmdpy.api import query
 except ModuleNotFoundError:
     print("Requirements missing, possible fix:\n\tfmdpy -u")
     print("Report to: https://github.com/liupold/fmdpy/issues")
@@ -99,9 +98,9 @@ def fmdpy(count, search, fmt, bitrate, multiple,
     For multiple download you can use something like:\n
 
     "fmdpy: 1, 2, 3, 5:8", (This will download 1, 2, 3, 5, 6, 7, 8)\n
-    "fmdpy: >1, >2", (This will play (stream) 1, 2) (using player_cmd)\n
-    "fmdpy: L5", (This will find lyric of 5)\n
-    "fmdpy: /<SEARCH/URL>", (This will search songs based on <SEARCH/URL>).\n
+    "fmdpy: 1.p, 2.p", (This will play (stream) 1, 2) (using player_cmd)\n
+    "fmdpy: 5.p", (This will find lyric of 5)\n
+    "fmdpy: <SEARCH/URL>", (This will search songs based on <SEARCH/URL>).\n
 
     Streaming, downloading can also be mixed. If done so downloading
     will be done prior to streaming.
@@ -115,66 +114,9 @@ def fmdpy(count, search, fmt, bitrate, multiple,
                       addlyrics=lyrics)
         sys.exit(0)
 
-    song_list = query(search, count)
-    for i, sng in enumerate(song_list):
-        print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
-
+    song_list = find_songs(search, count)
     while True:
-        if len(song_list) > 0:
-            download_pool = []
-            stream_pool = []
-
-            prompt_input = input("\nfmdpy: ")
-
-            if prompt_input in ('quit', 'exit'):
-                break
-
-            if prompt_input[0] == '/':
-                search = prompt_input[1:]
-                song_list = query(search, count)
-                for i, sng in enumerate(song_list):
-                    print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
-                continue
-
-            if prompt_input[0] == 'L':
-                print(get_lyric(song_list[int(prompt_input[1:]) - 1]))
-                continue
-
-            for indx in prompt_input.replace(' ', '').split(','):
-                if indx[0] == '>':
-                    c_pool = stream_pool
-                    indx = indx[1:]
-                else:
-                    c_pool = download_pool
-
-                if ':' in indx:
-                    [lower, upper] = indx.split(':')
-                    c_pool += [*range(int(lower) - 1, int(upper))]
-                elif '-' in indx:
-                    [lower, upper] = indx.split('-')
-                    c_pool += [*range(int(lower) - 1, int(upper))]
-                else:
-                    c_pool.append(int(indx)-1)
-
-            def download(i):
-                sng = song_list[i]
-                get_song_urls(sng)
-                status = main_dl(sng, dlformat=fmt, bitrate=bitrate,
-                                 addlyrics=lyrics, directory=directory,
-                                 filename=filename, silent=False)
-                return status
-
-            with ThreadPoolExecutor(max_workers=multiple,
-                    initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)) as exe:
-                exe.map(download, download_pool)
-
-            for i in stream_pool:
-                sng = song_list[i]
-                get_song_urls(sng)
-                stream.player(sng)
-        else:
-            print(f"No result for: {search}")
-            break
+        song_list = run_prompt(input("FMDPY>> "), song_list, multiple, count)
 
 
 if __name__ == '__main__':
