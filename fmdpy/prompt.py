@@ -19,7 +19,6 @@ def run_prompt(prompt_input, song_list, multiple, count,
                fmt, bitrate, lyrics, directory, filename):
         download_pool = []
         stream_pool = []
-        print(download_pool)
 
         if "" == prompt_input:
             return song_list
@@ -73,8 +72,5 @@ def run_prompt(prompt_input, song_list, multiple, count,
             sng = song_list[i]
             get_song_urls(sng)
             stream.player(sng)
-
-        for i in download_pool:
-            download(i)
 
         return song_list
