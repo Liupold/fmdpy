@@ -61,7 +61,7 @@ def run_prompt(prompt_input, song_list, multiple, count,
             get_song_urls(sng)
             status = main_dl(sng, dlformat=fmt, bitrate=bitrate,
                              addlyrics=lyrics, directory=directory,
-                             filename=filename, silent=False)
+                             filename=filename, dltext=f"{i}", silent=False)
             return status
 
         with ThreadPoolExecutor(max_workers=multiple,

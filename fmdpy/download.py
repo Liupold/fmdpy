@@ -67,6 +67,7 @@ def main_dl(
         addlyrics=0,
         directory="./",
         filename="$artist-$name-$year",
+        dltext=None,
         silent=0):
     """Main download function for fmdpy."""
     to_delete = []
@@ -87,8 +88,8 @@ def main_dl(
             if os.path.isfile(output_file):
                 print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
                 return False
-            dlf(song_obj.url, tf_song.name, dltext=f"SONG: ({song_obj.title})", silent=silent)
-            dlf(song_obj.thumb_url, tf_thumb.name, dltext=f"ART : ({song_obj.title})", silent=silent)
+            dlf(song_obj.url, tf_song.name, dltext=f"SONG: ({dltext})", silent=silent)
+            dlf(song_obj.thumb_url, tf_thumb.name, dltext=f"ART : ({dltext})", silent=silent)
 
             if dlformat != 'native':
                 output_file += f".{dlformat}"
