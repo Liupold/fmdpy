@@ -19,6 +19,13 @@ def run_prompt(prompt_input, song_list, multiple, count,
                fmt, bitrate, lyrics, directory, filename):
         download_pool = []
         stream_pool = []
+        print(download_pool)
+
+        if "" == prompt_input:
+            return song_list
+
+        if prompt_input in ('.q', '.exit', '.quit'):
+            sys.exit()
 
         if not prompt_input[0].isdigit():
             return find_songs(prompt_input, count)
@@ -49,8 +56,6 @@ def run_prompt(prompt_input, song_list, multiple, count,
         if prompt_input[-2:] == '.l':
             print(get_lyric(song_list[int(prompt_input[:-2])]))
 
-        if prompt_input in ('.q', '.exit', '.quit'):
-            sys.exit()
 
         def download(i):
             sng = song_list[i]
