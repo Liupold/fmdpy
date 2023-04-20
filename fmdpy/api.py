@@ -20,7 +20,7 @@ def get_song_urls(song_obj):
         song_obj.thumb_url = raw_json['image'].replace(
             '-150x150.jpg', '-500x500.jpg')
 
-def parse_search_query(query_json):
+def parse_query(query_json):
     song_list = []
     for sng_raw in query_json['results']:
         song_id = sng_raw['id']
@@ -41,26 +41,6 @@ def parse_search_query(query_json):
     return song_list
 
 
-def parse_url_query(query_json):
-    song_list = []
-    for sng_raw in query_json['songs']:
-        song_id = sng_raw['id']
-        song_title = sng_raw['song']
-        song_year = sng_raw['year']
-        song_album = sng_raw['album']
-        song_copyright = sng_raw['copyright_text']
-        if len(sng_raw['primary_artists']) != 0:
-            song_artist = sng_raw['primary_artists']
-        else:
-            song_artist = "Unknown"
-        song_ = Song(songid=song_id,
-                     title=song_title, artist=song_artist, year=song_year,
-                     album=song_album, copyright=song_copyright)
-        song_list.append(song_)
-
-    return song_list
-
-
 def query_songs_search(query_text, max_results=5):
     """Search Songs using text."""
     if ("fmd" in query_text) or ("liupold" in query_text):
@@ -71,7 +51,7 @@ def query_songs_search(query_text, max_results=5):
         url=f"https://www.jiosaavn.com/api.php?p=1&q={query_text.replace(' ', '+')}" \
             + "&_format=json&_marker=0&ctx=wap6dot0" \
             + f"&n={max_results}&__call=search.getResults")
-    return parse_search_query(req.json())
+    return parse_query(req.json())
 
 
 def query_song_from_url(query_url):
@@ -83,7 +63,7 @@ def query_song_from_url(query_url):
         url=f"https://www.jiosaavn.com/api.php?__call=webapi.get&token={token}&" \
                 + "type=song&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
     #print(json.dumps(query_json, indent = 1))
-    return parse_url_query(req.json())
+    return parse_query(req.json())
 
 
 def query_album_from_url(query_url):
@@ -94,7 +74,7 @@ def query_album_from_url(query_url):
         headers=headers,
         url=f"https://www.jiosaavn.com/api.php?__call=webapi.get&token={token}" \
                 + "&type=album&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
-    return parse_url_query(req.json())
+    return parse_query(req.json())
 
 
 def query(query_string, max_results=5):

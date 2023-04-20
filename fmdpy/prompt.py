@@ -1,11 +1,9 @@
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from concurrent.futures import thread as cf_thread
 from threading import Event
-from fmdpy import config, stream
+from fmdpy import stream
 from fmdpy.api import query, get_song_urls
 from fmdpy.download import main_dl, get_lyric
-from fmdpy.splist import pl_spotify_dl
 from tqdm import tqdm
 
 def list_songs(song_list):

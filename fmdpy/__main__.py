@@ -4,9 +4,8 @@ import sys
 import ast
 import subprocess
 from tqdm import tqdm
-from concurrent.futures import ThreadPoolExecutor
 from threading import RLock as TRLock
-from fmdpy import ART, VERSION, install_requires, config, stream
+from fmdpy import ART, VERSION, install_requires, config
 
 if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
     subprocess.check_call([sys.executable, '-m', 'pip',
@@ -16,8 +15,7 @@ if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
 try:
     import click
     from fmdpy.prompt import run_prompt, find_songs
-    from fmdpy.api import query
-    from fmdpy import config
+    from fmdpy.splist import pl_spotify_dl
 except ModuleNotFoundError:
     print("Requirements missing, possible fix:\n\tfmdpy -u")
     print("Report to: https://github.com/liupold/fmdpy/issues")
