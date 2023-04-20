@@ -118,7 +118,13 @@ def fmdpy(count, search, fmt, bitrate, multiple,
 
     song_list = find_songs(search, count)
     while True:
-        song_list = run_prompt(input("FMDPY>> "), song_list, multiple, count,\
+        try:
+            prompt_input = input("FMDPY>>")
+        except KeyboardInterrupt:
+            print("\nGoodbye cruel world! :)")
+            break
+
+        song_list = run_prompt(prompt_input, song_list, multiple, count,\
                 fmt, bitrate, lyrics, directory, filename)
 
 

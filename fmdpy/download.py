@@ -7,8 +7,8 @@ import music_tag
 import requests
 from pydub import AudioSegment
 from tqdm import tqdm
-
 from fmdpy import config, headers, utils
+from fmdpy.api import get_song_urls
 
 def convert_audio(input_file_path, output_file_path, bitrate, dlformat):
     try:
@@ -28,7 +28,7 @@ def convert_audio(input_file_path, output_file_path, bitrate, dlformat):
         print(f"Error writing output file {output_file_path}: {e}")
         return
 
-def dlf(url, file_name, silent=0, dltext=""):
+def dlf(url, file_name, silent=0, dltext="", stop_sig=None):
     """Download a file to a specified loaction."""
     with open(file_name, "wb") as file_obj:
         response = requests.get(url, headers=headers, stream=True)
@@ -43,12 +43,15 @@ def dlf(url, file_name, silent=0, dltext=""):
                     leave=True, unit_scale=True, unit='B') as pbar:
                 for data in response.iter_content(chunk_size=4096):
                     pbar.update(file_obj.write(data))
+                    if stop_sig and stop_sig.is_set():
+                        return False
                 # dl_length = len(data)
                 #done = int(50 * dl_length / total_length)
                 #sys.stdout.write("\r%s[%s%s](%.2f%%)" % (
                 #    dltext, '=' * done, ' ' * (50 - done),
                 #            (dl_length / total_length) * 100))
                 #sys.stdout.flush()
+    return True
 
 def get_lyric(song_obj):
     """Get lyric."""
@@ -68,9 +71,11 @@ def main_dl(
         directory="./",
         filename="$artist-$name-$year",
         dltext=None,
-        silent=0):
+        silent=0,
+        stop_sig=None):
     """Main download function for fmdpy."""
     to_delete = []
+    get_song_urls(song_obj)
     if song_obj.url == "":
         return None
 
@@ -88,8 +93,15 @@ def main_dl(
             if os.path.isfile(output_file):
                 print(f"[WARNING]: File {output_file + '.mp4'} exist, skipping")
                 return False
-            dlf(song_obj.url, tf_song.name, dltext=f"SONG: ({dltext})", silent=silent)
-            dlf(song_obj.thumb_url, tf_thumb.name, dltext=f"ART : ({dltext})", silent=silent)
+
+            stat = dlf(song_obj.url, tf_song.name, \
+                    dltext=f"SONG: ({dltext})", silent=silent, stop_sig=stop_sig)
+            if not stat:
+                return stat
+            stat = dlf(song_obj.thumb_url, tf_thumb.name, \
+                    dltext=f"ART : ({dltext})", silent=silent, stop_sig=stop_sig)
+            if not stat:
+                return stat
 
             if dlformat != 'native':
                 output_file += f".{dlformat}"
