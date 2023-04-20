@@ -14,7 +14,7 @@ if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
 
 try:
     import click
-    from fmdpy.prompt import run_prompt, find_songs
+    from fmdpy.prompt import FmdpyPrompt, find_songs
     from fmdpy.splist import pl_spotify_dl
 except ModuleNotFoundError:
     print("Requirements missing, possible fix:\n\tfmdpy -u")
@@ -108,22 +108,26 @@ def fmdpy(count, search, fmt, bitrate, multiple,
     -f native: save to native container [Default](ffmpeg not req.)
     (-b is ignored)
     """
+
+    #if 'spotify.com/playlist' in search:
+    #    pl_spotify_dl(search, dlformat=fmt, bitrate=bitrate,
+    #                  addlyrics=lyrics)
+    #    sys.exit(0)
+
+    config['UI']['max_result_count'] = str(count)
+    config['DL_OPTIONS']['bitrate'] = str(bitrate)
+    config['DL_OPTIONS']['fmt'] = fmt
+    config['DL_OPTIONS']['multiple'] = str(multiple)
+    config['DL_OPTIONS']['default_directory'] = directory
+    config['DL_OPTIONS']['filename'] = filename
+    config['DL_OPTIONS']['lyrics'] = str(lyrics)
+
     search = ' '.join(search)
-    if 'spotify.com/playlist' in search:
-        pl_spotify_dl(search, dlformat=fmt, bitrate=bitrate,
-                      addlyrics=lyrics)
-        sys.exit(0)
 
     song_list = find_songs(search, count)
-    while True:
-        try:
-            prompt_input = input("FMDPY>>")
-        except KeyboardInterrupt:
-            print("\nGoodbye cruel world! :)")
-            break
-
-        song_list = run_prompt(prompt_input, song_list, multiple, count,\
-                fmt, bitrate, lyrics, directory, filename)
+    fprompt = FmdpyPrompt(f"fmdpy -> ", song_list, config)
+    fprompt.song_list = song_list
+    fprompt.run()
 
 
 if __name__ == '__main__':

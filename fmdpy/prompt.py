@@ -1,83 +1,154 @@
+import os
 import sys
+import ast
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import readline
 from threading import Event
-from fmdpy import stream
+from fmdpy import ART, stream, VERSION
 from fmdpy.api import query, get_song_urls
 from fmdpy.download import main_dl, get_lyric
 from tqdm import tqdm
+from appdirs import user_cache_dir
 
 def list_songs(song_list):
     for i, sng in enumerate(song_list):
         print(f'{i}) {sng.title} [{sng.artist}] ({sng.year})')
+    print("\n")
 
 def find_songs(search_str, count):
     song_list = query(search_str, count)
     list_songs(song_list)
     return song_list
 
-def run_prompt(prompt_input, song_list, multiple, count,
-               fmt, bitrate, lyrics, directory, filename):
-        download_pool = []
-        stream_pool = []
+class FmdpyPrompt():
+    def __init__(self, prompt, song_list, config):
+        self.prompt = prompt
+        self.song_list = song_list
+        self.config = config
+        self.download_pool = []
+        self.stream_pool = []
+        self.stop_sig = Event()
 
-        if "" == prompt_input:
-            return song_list
+        cache_dir = user_cache_dir('fmdpy', 'liupold')
+        os.makedirs(cache_dir, exist_ok=True)
+        self.histfile = user_cache_dir('fmdpy', 'liupold') + '/hist'
 
-        if prompt_input in ('.q', '.exit', '.quit'):
-            sys.exit()
+        if not (os.path.exists(self.histfile)):
+            with open(self.histfile, 'w') as f:
+                pass
 
-        if not prompt_input[0].isdigit():
-            return find_songs(prompt_input, count)
+    def do_exit(self):
+        sys.exit()
 
-        if ('.' not in prompt_input or
-            prompt_input[-2:] == ".p"):
+    def do_find_songs(self, search_str):
+        self.song_list = find_songs(search_str,
+                                    int(self.config['UI']['max_result_count']))
 
-            for indx in prompt_input.replace(' ', '').split(','):
-                if indx[-2:] == '.p':
-                    c_pool = stream_pool
-                    indx = indx[:-2]
-                else:
-                    c_pool = download_pool
+    def update_pool(self, prompt_str):
+        for indx in prompt_str.replace(' ', '').split(','):
+            if indx[-2:] == '.p':
+                c_pool = self.stream_pool
+                indx = indx[:-2]
+            else:
+                c_pool = self.download_pool
+            if ':' in indx:
+                [lower, upper] = indx.split(':')
+                c_pool += [*range(int(lower), int(upper)+1)]
+            elif '-' in indx:
+                [lower, upper] = indx.split('-')
+                c_pool += [*range(int(lower), int(upper)+1)]
+            else:
+                c_pool.append(int(indx))
 
-                if ':' in indx:
-                    [lower, upper] = indx.split(':')
-                    c_pool += [*range(int(lower), int(upper)+1)]
-                elif '-' in indx:
-                    [lower, upper] = indx.split('-')
-                    c_pool += [*range(int(lower), int(upper)+1)]
-                else:
-                    c_pool.append(int(indx))
+    def do_get_album(self, prompt_str):
+        self.song_list = find_songs(\
+                f"{self.song_list[int(prompt_str[:-2])].album_url}", count)
 
-        if prompt_input[-2:] == '.a':
-            return find_songs(\
-                    f"{song_list[int(prompt_input[:-2])].album_url}", count)
+    def do_get_lyric(self, prompt_str):
+        print(get_lyric(self.song_list[int(prompt_str[:-2])]))
 
-        if prompt_input[-2:] == '.l':
-            print(get_lyric(song_list[int(prompt_input[:-2])]))
-
-        stop_sig = Event()
-        with ThreadPoolExecutor(max_workers=multiple,
+    def DL(self):
+        with ThreadPoolExecutor(max_workers=int(self.config['DL_OPTIONS']['multiple']),
                 initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)) as exe:
             futures = []
-            for i in download_pool:
-                future = exe.submit(main_dl, song_obj=song_list[i],
-                                    dlformat=fmt, bitrate=bitrate,
-                                    addlyrics=lyrics, directory=directory,
-                                    filename=filename, dltext=f"{i}",
-                                    silent=False, stop_sig=stop_sig)
+            for i in self.download_pool:
+                future = exe.submit(main_dl, song_obj=self.song_list[i],
+                                    dlformat=self.config['DL_OPTIONS']['fmt'],
+                                    bitrate=int(self.config['DL_OPTIONS']['bitrate']),
+                                    addlyrics=ast.literal_eval(self.config['DL_OPTIONS']['lyrics']),
+                                    directory=self.config['DL_OPTIONS']['default_directory'],
+                                    filename=self.config['DL_OPTIONS']['filename'],
+                                    dltext=f"{i}",
+                                    silent=False, stop_sig=self.stop_sig)
                 futures.append(future)
             try:
                 for future in as_completed(futures):
                     future.result()
             except KeyboardInterrupt:
-                stop_sig.set()
+                self.stop_sig.set()
                 exe.shutdown(wait=True, cancel_futures=True)
                 sys.stdout.flush()
                 print("\n\nAborting Downloads!!!\n")
 
-        for i in stream_pool:
-            sng = song_list[i]
+    def SM(self):
+        for i in self.stream_pool:
+            sng = self.song_list[i]
             get_song_urls(sng)
             stream.player(sng)
 
-        return song_list
+    def do_get_config(self):
+        for sect in self.config.sections():
+            print(f"[{sect}]")
+            for key, val in self.config.items(sect):
+                print(f"{key} = {val}")
+            print("\n")
+
+    def parse_input(self, prompt_str):
+        if prompt_str == '':
+            pass
+        elif (not prompt_str[0].isdigit() \
+                and '.' not in prompt_str):
+            self.do_find_songs(prompt_str)
+        elif ('.' not in prompt_str or
+              prompt_str[-2:] == ".p"):
+            self.update_pool(prompt_str)
+            self.SM()
+            self.DL()
+        elif prompt_str[-2:] == '.a':
+            self.do_get_album(prompt_str)
+
+        elif prompt_str[-2:] == '.l':
+            self.do_get_lyric(prompt_str)
+
+        elif prompt_str in ('.q', '.bye', '.exit', '.quit'):
+            readline.write_history_file(self.histfile)
+            sys.exit()
+
+        elif prompt_str[0:5] == ".conf":
+            self.do_get_config()
+
+        elif prompt_str[0:5] == ".art":
+            print(ART)
+
+        else:
+            if prompt_str[0].isdigit():
+                print(f"Unknown operator: ",
+                      prompt_str.split('.')[1])
+            else:
+                print(f"Unknown . cmd: {prompt_str}")
+
+    def run(self):
+        readline.read_history_file(self.histfile)
+        while True:
+            try:
+                prompt_input = input(f"fmdpy[v{VERSION}]: ")
+            except KeyboardInterrupt:
+                print("\nGoodbye cruel world! :)")
+                break
+
+            readline.write_history_file(self.histfile)
+
+            self.download_pool = []
+            self.stream_pool = []
+            self.stop_sig.clear()
+            self.parse_input(prompt_input)
