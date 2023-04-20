@@ -22,7 +22,10 @@ def get_song_urls(song_obj):
 
 def parse_query(query_json):
     song_list = []
-    for sng_raw in query_json['results']:
+    r_key = 'results'
+    if 'songs' in query_json:
+        r_key = 'songs'
+    for sng_raw in query_json[r_key]:
         song_id = sng_raw['id']
         song_title = sng_raw['song']
         song_year = sng_raw['year']

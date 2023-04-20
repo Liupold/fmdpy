@@ -4,7 +4,7 @@ import platform
 import ast
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Event
-from fmdpy import ART, stream, VERSION
+from fmdpy import ART, stream
 from fmdpy.api import query, get_song_urls
 from fmdpy.download import main_dl, get_lyric
 from tqdm import tqdm
@@ -66,7 +66,8 @@ class FmdpyPrompt():
 
     def do_get_album(self, prompt_str):
         self.song_list = find_songs(\
-                f"{self.song_list[int(prompt_str[:-2])].album_url}", count)
+                f"{self.song_list[int(prompt_str[:-2])].album_url}",
+                                    int(self.config['UI']['max_result_count']))
 
     def do_get_lyric(self, prompt_str):
         print(get_lyric(self.song_list[int(prompt_str[:-2])]))
@@ -111,7 +112,7 @@ class FmdpyPrompt():
         if prompt_str == '':
             pass
         elif (not prompt_str[0].isdigit() \
-                and '.' not in prompt_str):
+                and '.' != prompt_str[0]):
             self.do_find_songs(prompt_str)
         elif ('.' not in prompt_str or
               prompt_str[-2:] == ".p"):
