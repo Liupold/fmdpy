@@ -1,5 +1,6 @@
 import os
 import sys
+import platform
 import ast
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import readline
@@ -138,7 +139,7 @@ class FmdpyPrompt():
                 print(f"Unknown . cmd: {prompt_str}")
 
     def run(self):
-        if os.name in ('posix', 'nt'):
+        if platform.system() in ('Linux', 'Windows'):
             readline.read_history_file(self.histfile)
         while True:
             try:
@@ -147,7 +148,7 @@ class FmdpyPrompt():
                 print("\nGoodbye cruel world! :)")
                 break
 
-            if os.name in ('posix', 'nt'):
+            if platform.system() in ('Linux', 'Windows'):
                 readline.write_history_file(self.histfile)
 
             self.download_pool = []
