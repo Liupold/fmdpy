@@ -37,9 +37,9 @@ class FmdpyPrompt():
             os.makedirs(cache_dir, exist_ok=True)
             self.histfile = user_cache_dir('fmdpy', 'liupold') + '/hist'
 
-        if not (os.path.exists(self.histfile)):
-            with open(self.histfile, 'w') as _:
-                pass
+            if not (os.path.exists(self.histfile)):
+                with open(self.histfile, 'w') as _:
+                    pass
 
     def do_exit(self):
         sys.exit()
