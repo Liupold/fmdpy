@@ -3,13 +3,15 @@ import sys
 import platform
 import ast
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import readline
 from threading import Event
 from fmdpy import ART, stream, VERSION
 from fmdpy.api import query, get_song_urls
 from fmdpy.download import main_dl, get_lyric
 from tqdm import tqdm
-from appdirs import user_cache_dir
+
+if platform.system() in ('Linux'):
+    from appdirs import user_cache_dir
+    import readline
 
 def list_songs(song_list):
     for i, sng in enumerate(song_list):
@@ -30,9 +32,10 @@ class FmdpyPrompt():
         self.stream_pool = []
         self.stop_sig = Event()
 
-        cache_dir = user_cache_dir('fmdpy', 'liupold')
-        os.makedirs(cache_dir, exist_ok=True)
-        self.histfile = user_cache_dir('fmdpy', 'liupold') + '/hist'
+        if platform.system() in ('Linux'):
+            cache_dir = user_cache_dir('fmdpy', 'liupold')
+            os.makedirs(cache_dir, exist_ok=True)
+            self.histfile = user_cache_dir('fmdpy', 'liupold') + '/hist'
 
         if not (os.path.exists(self.histfile)):
             with open(self.histfile, 'w') as _:
@@ -139,7 +142,7 @@ class FmdpyPrompt():
                 print(f"Unknown . cmd: {prompt_str}")
 
     def run(self):
-        if platform.system() in ('Linux', 'Windows'):
+        if platform.system() in ('Linux'):
             readline.read_history_file(self.histfile)
         while True:
             try:
@@ -148,7 +151,7 @@ class FmdpyPrompt():
                 print("\nGoodbye cruel world! :)")
                 break
 
-            if platform.system() in ('Linux', 'Windows'):
+            if platform.system() in ('Linux'):
                 readline.write_history_file(self.histfile)
 
             self.download_pool = []
