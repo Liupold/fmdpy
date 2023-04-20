@@ -20,7 +20,7 @@ print("(Done)")
 os.mkdir('./tmp_test')
 
 os.environ['FMDPY_CONFIG_FILE'] = "./tmp_test/FMDPY.ini"
-subprocess.check_call([sys.executable, '-m', 'fmdpy', '-g'])
+subprocess.check_call(['fmdpy', '-g'])
 print("##########FMDPY.ini#################")
 with open("./tmp_test/FMDPY.ini") as f:
     print(f.read())
