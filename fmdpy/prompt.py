@@ -34,7 +34,7 @@ class FmdpyPrompt():
         self.histfile = user_cache_dir('fmdpy', 'liupold') + '/hist'
 
         if not (os.path.exists(self.histfile)):
-            with open(self.histfile, 'w') as f:
+            with open(self.histfile, 'w') as _:
                 pass
 
     def do_exit(self):
@@ -132,21 +132,23 @@ class FmdpyPrompt():
 
         else:
             if prompt_str[0].isdigit():
-                print(f"Unknown operator: ",
+                print("Unknown operator: ",
                       prompt_str.split('.')[1])
             else:
                 print(f"Unknown . cmd: {prompt_str}")
 
     def run(self):
-        readline.read_history_file(self.histfile)
+        if os.name in ('posix', 'nt'):
+            readline.read_history_file(self.histfile)
         while True:
             try:
-                prompt_input = input(f"fmdpy[v{VERSION}]: ")
+                prompt_input = input(self.prompt)
             except KeyboardInterrupt:
                 print("\nGoodbye cruel world! :)")
                 break
 
-            readline.write_history_file(self.histfile)
+            if os.name in ('posix', 'nt'):
+                readline.write_history_file(self.histfile)
 
             self.download_pool = []
             self.stream_pool = []
