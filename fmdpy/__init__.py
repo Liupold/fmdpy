@@ -1,7 +1,7 @@
 """fmdpy."""
 from . import conf
 
-VERSION = "0.6.3"
+VERSION = "0.7"
 install_requires = ['click', 'music-tag>=0.4.3', 'requests', 'pillow',
                     'lyricsgenius', 'dataclasses', 'spotipy', 'tqdm', 'pydub',
                     'pycryptodome', 'appdirs']
