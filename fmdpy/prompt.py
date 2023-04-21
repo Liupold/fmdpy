@@ -15,7 +15,7 @@ if platform.system() in ('Linux'):
 
 def list_songs(song_list):
     for i, sng in enumerate(song_list):
-        print(f'{i}) {sng.title} [{sng.artist}] ({sng.year})')
+        print(f'{i+1}) {sng.title} [{sng.artist}] ({sng.year})')
     print("\n")
 
 def find_songs(search_str, count):
@@ -77,7 +77,7 @@ class FmdpyPrompt():
                 initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)) as exe:
             futures = []
             for i in self.download_pool:
-                future = exe.submit(main_dl, song_obj=self.song_list[i],
+                future = exe.submit(main_dl, song_obj=self.song_list[i - 1],
                                     dlformat=self.config['DL_OPTIONS']['fmt'],
                                     bitrate=int(self.config['DL_OPTIONS']['bitrate']),
                                     addlyrics=ast.literal_eval(self.config['DL_OPTIONS']['lyrics']),
@@ -97,7 +97,7 @@ class FmdpyPrompt():
 
     def SM(self):
         for i in self.stream_pool:
-            sng = self.song_list[i]
+            sng = self.song_list[i - 1]
             get_song_urls(sng)
             stream.player(sng)
 
