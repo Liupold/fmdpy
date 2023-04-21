@@ -15,6 +15,7 @@ if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
 try:
     import click
     from fmdpy.prompt import FmdpyPrompt, find_songs, list_songs
+    from fmdpy.splist import get_songs_splist
 except ModuleNotFoundError:
     print("Requirements missing, possible fix:\n\tfmdpy -u")
     print("Report to: https://github.com/liupold/fmdpy/issues")

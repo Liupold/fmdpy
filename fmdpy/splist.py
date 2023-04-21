@@ -1,12 +1,11 @@
 """A."""
-import os
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from fmdpy import config
 
 def get_songs_splist(url):
-    from fmdpy.api import query
     """Search spotiy song and download from fmdpy."""
+    from fmdpy.api import query
     song_list = []
     spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
         client_id=config['API_KEYS']['spotify_client_id'],
