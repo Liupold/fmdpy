@@ -4,6 +4,7 @@ import requests
 from Crypto.Cipher import DES
 from fmdpy import headers, ART
 from fmdpy.song import Song
+from fmdpy.splist import get_songs_splist
 
 def get_song_urls(song_obj):
     """Fetch song download url."""
@@ -88,4 +89,6 @@ def query(query_string, max_results=5):
         return query_album_from_url(query_string)
     if query_string == "":
         query_string = "new"
+    if 'spotify.com/playlist' in query_string:
+        return get_songs_splist(query_string)
     return query_songs_search(query_string, max_results)

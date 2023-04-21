@@ -134,7 +134,8 @@ class FmdpyPrompt():
 
         elif prompt_str[0:5] == ".art":
             print(ART)
-
+        elif prompt_str[0:3] == ".ls":
+            list_songs(self.song_list)
         else:
             if prompt_str[0].isdigit():
                 print("Unknown operator: ",
