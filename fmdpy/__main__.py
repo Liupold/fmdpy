@@ -15,7 +15,6 @@ if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
 try:
     import click
     from fmdpy.prompt import FmdpyPrompt, find_songs, list_songs
-    from fmdpy.splist import get_songs_splist
 except ModuleNotFoundError:
     print("Requirements missing, possible fix:\n\tfmdpy -u")
     print("Report to: https://github.com/liupold/fmdpy/issues")
@@ -110,11 +109,7 @@ def fmdpy(count, search, fmt, bitrate, multiple,
     """
 
     search = ' '.join(search)
-    if 'spotify.com/playlist' in search:
-        song_list = get_songs_splist(search)
-        list_songs(song_list)
-    else:
-        song_list = find_songs(search, count)
+    song_list = find_songs(search, count)
 
     config['UI']['max_result_count'] = str(count)
     config['DL_OPTIONS']['bitrate'] = str(bitrate)
