@@ -78,7 +78,9 @@ def query_album_from_url(query_url):
         headers=headers,
         url=f"https://www.jiosaavn.com/api.php?__call=webapi.get&token={token}" \
                 + "&type=album&includeMetaTags=0&ctx=web6dot0&_format=json&_marker=0")
-    return parse_query(req.json())
+    song_list = parse_query(req.json())
+    print(f"Album:\t\"{song_list[0].album}\"\n")
+    return song_list
 
 
 def query(query_string, max_results=5):

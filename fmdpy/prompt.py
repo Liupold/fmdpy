@@ -63,7 +63,7 @@ class FmdpyPrompt():
 
     def do_get_album(self, prompt_str):
         self.song_list = find_songs(\
-                f"{self.song_list[int(prompt_str[:-2])].album_url}",
+                f"{self.song_list[int(prompt_str[:-2]) - 1].album_url}",
                                     int(self.config['UI']['max_result_count']))
 
     def do_get_lyric(self, prompt_str):
