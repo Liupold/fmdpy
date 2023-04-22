@@ -88,7 +88,7 @@ def query(query_string, max_results=5):
     elif query_string[:31] == "https://www.jiosaavn.com/album/":
         return query_album_from_url(query_string)
     if query_string == "":
-        query_string = "new"
+        return []
     if 'spotify.com/playlist' in query_string:
         return get_songs_splist(query_string)
     return query_songs_search(query_string, max_results)

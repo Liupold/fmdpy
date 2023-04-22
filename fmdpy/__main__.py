@@ -111,7 +111,10 @@ def fmdpy(count, search, fmt, bitrate, multiple,
     """
 
     search = ' '.join(search)
-    song_list = find_songs(search, count)
+    song_list = []
+
+    if search:
+        song_list = find_songs(search, count)
 
     config['UI']['max_result_count'] = str(count)
     config['DL_OPTIONS']['bitrate'] = str(bitrate)

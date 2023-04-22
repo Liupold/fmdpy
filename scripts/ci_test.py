@@ -27,7 +27,7 @@ with open("./tmp_test/FMDPY.ini") as f:
 print("####################################")
 
 args = ['fmdpy', '-c', '10',
-        '', '-d', 'tmp_test', '-f']
+        'new', '-d', 'tmp_test', '-f']
 with subprocess.Popen([*args, 'mp3'],
                       stdin=subprocess.PIPE, stdout=subprocess.PIPE) as cp:
     cp.communicate('3-6,1\n'.encode())
