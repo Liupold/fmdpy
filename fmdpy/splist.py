@@ -1,13 +1,14 @@
 """A."""
 import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-from fmdpy import config
+from spotipy.oauth2 import SpotifyClientCredentials, CacheFileHandler
+from fmdpy import config, cache_dir
 
 def get_songs_splist(url):
     """Search spotiy song and download from fmdpy."""
     from fmdpy.api import query
     song_list = []
     spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
+        cache_handler=CacheFileHandler(cache_path=f"{cache_dir}/spotipy.cache"),
         client_id=config['API_KEYS']['spotify_client_id'],
         client_secret=config['API_KEYS']['spotify_client_secret'])
     )

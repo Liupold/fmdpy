@@ -4,13 +4,13 @@ import platform
 import ast
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Event
-from fmdpy import ART, stream
+from fmdpy import ART, stream, cache_dir
 from fmdpy.api import query, get_song_urls
 from fmdpy.download import main_dl, get_lyric
+from fmdpy.save_load import save, load, list_saves
 from tqdm import tqdm
 
 if platform.system() in ('Linux'):
-    from appdirs import user_cache_dir
     import readline
 
 def list_songs(song_list):
@@ -33,10 +33,7 @@ class FmdpyPrompt():
         self.stop_sig = Event()
 
         if platform.system() in ('Linux'):
-            cache_dir = user_cache_dir('fmdpy', 'liupold')
-            os.makedirs(cache_dir, exist_ok=True)
-            self.histfile = user_cache_dir('fmdpy', 'liupold') + '/hist'
-
+            self.histfile =  cache_dir + '/hist'
             if not (os.path.exists(self.histfile)):
                 with open(self.histfile, 'w') as _:
                     pass
@@ -129,13 +126,24 @@ class FmdpyPrompt():
             readline.write_history_file(self.histfile)
             sys.exit()
 
-        elif prompt_str[0:5] == ".conf":
+        elif prompt_str == ".conf":
             self.do_get_config()
 
-        elif prompt_str[0:5] == ".art":
+        elif prompt_str == ".art":
             print(ART)
-        elif prompt_str[0:3] == ".ls":
+        elif prompt_str == ".ls":
             list_songs(self.song_list)
+
+        elif prompt_str[0:5] == ".load":
+            self.song_list = load(prompt_str[5:].strip())
+            list_songs(self.song_list)
+
+        elif prompt_str[0:5] == ".save":
+            save(self.song_list, \
+                    prompt_str[5:].strip())
+            print("Saved!")
+        elif prompt_str == ".lsave":
+            list_saves()
         else:
             if prompt_str[0].isdigit():
                 print("Unknown operator: ",

@@ -1,4 +1,6 @@
 """fmdpy."""
+import os
+from appdirs import user_cache_dir
 from . import conf
 
 VERSION = "0.7"
@@ -24,3 +26,5 @@ o888o   o888o o888o o888o `Y8bod88P"  888bod8P'     .8'
 '''
 
 config = conf.load()
+cache_dir = user_cache_dir('fmdpy', 'liupold')
+os.makedirs(cache_dir, exist_ok=True)
