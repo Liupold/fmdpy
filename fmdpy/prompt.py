@@ -70,7 +70,7 @@ class FmdpyPrompt():
                                     int(self.config['UI']['max_result_count']))
 
     def do_get_lyric(self, prompt_str):
-        print(get_lyric(self.song_list[int(prompt_str[:-2])]))
+        print(get_lyric(self.song_list[int(prompt_str[:-2]) - 1]))
 
     def DL(self):
         with ThreadPoolExecutor(max_workers=int(self.config['DL_OPTIONS']['multiple']),
