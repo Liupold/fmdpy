@@ -1,12 +1,11 @@
 """fmdpy."""
 import os
-from appdirs import user_cache_dir
 from . import conf
 
 VERSION = "0.7"
 install_requires = ['click', 'music-tag>=0.4.3', 'requests', 'pillow',
                     'lyricsgenius', 'dataclasses', 'spotipy', 'tqdm', 'pydub',
-                    'pycryptodome', 'appdirs']
+                    'pycryptodome']
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
@@ -26,5 +25,6 @@ o888o   o888o o888o o888o `Y8bod88P"  888bod8P'     .8'
 '''
 
 config = conf.load()
-cache_dir = user_cache_dir('fmdpy', 'liupold')
+cache_dir = os.getenv('FMDPY_CACHE_DIR') or \
+    os.path.expanduser('~/.cache/fmdpy/')
 os.makedirs(cache_dir, exist_ok=True)

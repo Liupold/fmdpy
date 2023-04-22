@@ -2,7 +2,6 @@
 import os
 import configparser
 
-
 def load():
     """Loader of config (.ini) files for fmdpy."""
     config = configparser.ConfigParser()

@@ -6,10 +6,12 @@ import subprocess
 from tqdm import tqdm
 from threading import RLock as TRLock
 from fmdpy import ART, VERSION, install_requires, config
+import fmdpy
 
 if (len(sys.argv) > 1) and (sys.argv[1] in {'-u', '--update'}):
     subprocess.check_call([sys.executable, '-m', 'pip',
-                          'install', '--upgrade', *install_requires])
+                          'install', '--upgrade',
+                           *install_requires, 'fmdpy'])
     sys.exit(0)
 
 try:
@@ -20,7 +22,6 @@ except ModuleNotFoundError as e:
     print("Report to: https://github.com/liupold/fmdpy/issues")
     print(e)
     sys.exit(2)
-
 
 def gen(ctx, _, value):
     if not value:
@@ -38,7 +39,7 @@ def update(ctx, _, value):
         return
     else:
         subprocess.check_call([sys.executable, '-m', 'pip',
-            'install', '--upgrade', *install_requires])
+            'install', '--upgrade', *install_requires, 'fmdpy'])
         ctx.exit()
 
 def version(ctx, _, value):
