@@ -27,4 +27,4 @@ jobs:
       run: |
         python -m pip install --upgrade pipenv wheel
     - name: Run test script
-      run: python -m pipevn run python ./scripts/ci_test.py
+      run: python -m pipenv run python ./scripts/ci_test.py
