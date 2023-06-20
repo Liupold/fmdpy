@@ -108,6 +108,30 @@ class FmdpyPrompt():
     def parse_input(self, prompt_str):
         if prompt_str == '':
             pass
+        elif prompt_str == '.help':
+            print(
+            """
+             fmdpy prompt help!
+            --------------------
+            operator by defination operates on
+            song (is identified using index number).
+            `{}` stands for the song index.
+
+            Operators:
+            {}, {}-{}, {}:{}: Will download the songs from the list.
+            {}.p, {}-{}.p, {}:{}.p: Will stream the songs from the list.
+            {}.l: will show the lyrics
+
+            Commands:
+            .conf : show the config (priority: command line > config file > default)
+            .ls: show the current song list.
+            .save {name}: save the current song list.
+            .lsave: list all the saved song list.
+            .load {name}: load the saved song list.
+
+            some commands needs arguments, which are
+            shown in curly brackets.
+            """)
         elif (not prompt_str[0].isdigit() \
                 and '.' != prompt_str[0]):
             self.do_find_songs(prompt_str)
@@ -156,7 +180,7 @@ class FmdpyPrompt():
             readline.read_history_file(self.histfile)
         while True:
             try:
-                prompt_input = input(self.prompt)
+                prompt_input = input(self.prompt).strip()
             except KeyboardInterrupt:
                 print("\nGoodbye cruel world! :)")
                 break

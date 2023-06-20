@@ -108,6 +108,10 @@ def fmdpy(count, search, fmt, bitrate, multiple,
 
     -f native: save to native container [Default](ffmpeg not req.)
     (-b is ignored)
+
+    For more prompt options and help:
+
+    "fmdpy: .help"
     """
 
     search = ' '.join(search)
@@ -125,7 +129,7 @@ def fmdpy(count, search, fmt, bitrate, multiple,
     config['DL_OPTIONS']['lyrics'] = str(lyrics)
 
 
-    fprompt = FmdpyPrompt(f"fmdpy (v{VERSION})-> ", song_list, config)
+    fprompt = FmdpyPrompt(f"fmdpy: ", song_list, config)
     fprompt.song_list = song_list
     fprompt.run()
 

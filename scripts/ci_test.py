@@ -6,16 +6,6 @@ import glob
 import shutil
 import subprocess
 
-print("Building....")
-subprocess.check_call([sys.executable, './scripts/build.py'])
-print("(Done)")
-
-print("Installing...")
-wheel_file = glob.glob('./dist/fmdpy-*.whl')[0]
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', wheel_file])
-print("(Done)")
-
-
 # test
 os.mkdir('./tmp_test')
 
@@ -45,12 +35,5 @@ assert len(glob.glob('./tmp_test/*.mp4')) == 5
 
 # cleaning
 print("Cleaning...")
-shutil.rmtree('./dist')
 shutil.rmtree('./tmp_test')
-print("(Done)")
-
-# uninstall
-print("Uninstalling...")
-subprocess.check_call([sys.executable, '-m',
-                      'pip', 'uninstall', '-y', 'fmdpy'])
 print("(Done)")

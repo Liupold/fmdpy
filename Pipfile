@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+click = "*"
+music-tag = ">=0.4.3"
+requests = "*"
+pillow = "*"
+lyricsgenius = "*"
+dataclasses = "*"
+spotipy = "*"
+tqdm = "*"
+pydub = "*"
+pycryptodome = "*"
+fmdpy = {editable = true, path = "."}
+
+[dev-packages]
+twine = "*"
+build = "*"
+
+[requires]
+python_version = "3.11"
