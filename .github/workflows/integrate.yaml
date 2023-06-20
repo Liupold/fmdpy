@@ -25,9 +25,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install pipenv
       run: |
-        python -m pip install --upgrade pipenv wheel
+        python3 -m pip install --upgrade pipenv wheel
     - name: Install dependencies
       run: |
-        pipenv install --deploy --dev
+        python3 -m pipenv install --deploy
     - name: Run test script
-      run: pipenv run python ./scripts/ci_test.py
+      run: python -m pipenv run python ./scripts/ci_test.py
