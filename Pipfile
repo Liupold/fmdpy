@@ -15,7 +15,6 @@ tqdm = "*"
 pydub = "*"
 pycryptodome = "*"
 fmdpy = {editable = true, path = "."}
-importlib-metadata = "*"
 
 [dev-packages]
 twine = "*"

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Test to see if everything is working."""
 import os
 import sys
