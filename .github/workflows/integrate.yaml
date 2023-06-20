@@ -23,5 +23,8 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install pipenv
+      run: |
+        python -m pip install --upgrade pipenv wheel
     - name: Run test script
-      run: python -m pipenv run python ./scripts/ci_test.py
+      run: pipenv run python ./scripts/ci_test.py
