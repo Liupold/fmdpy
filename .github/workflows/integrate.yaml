@@ -26,6 +26,7 @@ jobs:
     - name: Install pipenv
       run: |
         python3 -m pip install --upgrade pipenv wheel
+        pipenv --support
     - name: Install dependencies
       run: |
         python3 -m pipenv install --deploy
